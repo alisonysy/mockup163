@@ -1,0 +1,127 @@
+*{margin: 0;padding: 0;box-sizing: border-box;font-family: Arial, Helvetica, sans-serif;}
+
+html{
+  font-size: 14px;
+}
+body{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  color:#555;
+}
+
+/*layout*/
+aside{
+  width:20%;
+}
+
+main{
+  width:80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* aside */
+aside > .addSong{
+  height: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 3px 0px 15px -8px rgba(0,0,0,0.75);
+  cursor: pointer;
+}
+
+aside > .addSong.active{
+  background: linear-gradient(to right, #C6FFDD,#FBD786,#f7797d);
+  color:white;
+  text-shadow: 2px 0px 10px rgba(11,11,11,0.6);
+  border-radius: 1rem;
+}
+
+aside > ul.songLi{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 80%;
+
+}
+
+aside > ul.songLi > li{
+  flex-grow: 1;
+  padding: 0.3rem;
+  padding-left: 1.2rem;
+  box-shadow: 3px 0px 15px -8px rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+}
+
+/* inside <main> -- Drag file area*/
+main > .addDrop{
+  width:20rem;
+  height:15rem;
+  border: 2px dashed #FBD786 ;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color:#888;
+}
+
+main > .addDrop > span{
+  margin-top:20px;
+  color:#888;
+}
+
+main > .addDrop > div#instructions{
+  text-align: center;
+  margin:10px;
+  padding: 10px;
+  background: linear-gradient(to right, #C6FFDD,#FBD786,#f7797d);
+  color:white;
+  text-shadow: 2px 0px 10px rgba(11,11,11,0.6);
+  border-radius: 10px;
+  box-shadow: 2px 0px 5px -1px rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+
+main > .addDrop > span#progressText{
+  margin-top: 8px;
+}
+
+/* inside <main> -- Song details area*/
+main > .songDetail{
+  width:25rem;
+  height:10rem;
+  border:2px solid #FBD786;
+  border-radius: 10px;
+  box-shadow: 2px 2px 18px -7px rgba(251,215,134,0.75);
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+main > .songDetail > .form{
+  width: 100%;
+  text-align: center;
+}
+
+main > .songDetail > .form > .formRow{
+  margin: 0.2rem 0;
+  width: 100%;
+}
+
+main > .songDetail > .form > .formRow > label{
+  display: inline-block;
+  width:20%;
+}
+
+main > .songDetail > .form > input[type=submit]{
+  padding: 0.2rem;
+  background: #FBD786;
+  border:none;
+  color: white;
+  text-shadow: 2px 0px 10px rgba(11,11,11,0.6);
+  cursor: pointer;
+  margin-top: 0.3rem;
+}

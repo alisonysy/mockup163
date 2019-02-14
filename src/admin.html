@@ -3,32 +3,36 @@
   <head>
     <title>Admin</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="./css/admin.css">
   </head>
   <body>
+    <aside>
+      <div class="addSong"></div>
+      <ul class="songLi"></ul>
+    </aside>
     <main>
-      <div id="addDrop" style="width:100px;height:100px;border:2px solid gold;">
-        <span id="instructions">Click to choose or drag your file</span>
-        <span id="progressText"></span>
+      <div id="addDrop" class="addDrop" >
+        <span>Drag your file here or</span>
+        <div id="instructions">Click to upload your file</div>
+        progress: <span id="progressText"></span>
+      </div>
+      <div class="songDetail">
       </div>
     </main> 
     <script src="../node_modules/leancloud-storage/dist/av-min.js"></script>
+    <script src="./js/init/av.js"></script>
+    
     <script src="../node_modules/qiniu-js/dist/qiniu.min.js"></script>
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/plupload/js/plupload.min.js"></script>
     <script src="../node_modules/plupload/js/moxie.js"></script>
+
+    <!--rendering-->
+    <script src="./js/eventHub.js"></script>
+    <script src="./js/addSong.js"></script>
+    <script src="./js/songLi.js"></script>
     <script src="./js/uploadSong.js"></script>
-    <script>
-      var APP_ID = 'W46fExAMqu6Lggva4gyaHv5o-gzGzoHsz';
-      var APP_KEY = '5SHYfmQzWtmKjTCi9Lr2nfgI';
+    <script src="./js/songForm.js"></script>
 
-      AV.init({
-        appId: APP_ID,
-        appKey: APP_KEY
-      });
-
-    </script>
-    <script>
-
-    </script>
   </body>
 </html>

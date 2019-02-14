@@ -1,6 +1,6 @@
 {
   let view = {
-    el:'#addDrop',
+    el:'main',
     find(selector){
       return $(this.el).find(selector)[0]
     }
@@ -72,9 +72,9 @@
                   //    "key": "gogopher.jpg"
                   //  }
                   // 查看简单反馈
-                  // var domain = up.getOption('domain');
-                  // var res = parseJSON(info.response);
-                  // var sourceLink = domain +"/"+ res.key; 获取上传成功后的文件的Url
+              var domain = up.getOption('domain');
+              var res = parseJSON(info.response);
+              var sourceLink = "http://" + domain +"/"+ encodeURIComponent(res.key); 
           },
           'Error': (up, err, errTip)=> {
                   //上传出错时，处理相关的事情
