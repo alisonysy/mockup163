@@ -28,7 +28,15 @@
     }
   };
   let model = {
-    data:{},
+    data:{id:'',title:'',singer:'',url:''},
+    create(data){
+      let Song = AV.Object.extend('Song');
+      let song = new Song();
+      song.set('title',data.title);
+      song.set('singer',data.singer);
+      song.set('url',data.url);
+      return song.save();
+    }
   };
   let controller = {
     init(view,model){
@@ -38,35 +46,41 @@
       //subscribe to new song uploading event
       window.eventHub.on('new', (data)=>{ //data === {url:___,title:___}
         this.view.render(data);
-        /*if(this.model.data.id){
-          this.model.data = {
-            name: '', url: '', id: '', singer: '', lyrics: ''
-          }
-        }else{
-          Object.assign(this.model.data, data)
-        }
-        this.view.render(this.model.data)*/
       });
       this.bindEvent();
     },
     bindEvent(){
       $(this.view.el).on('submit','form',(q)=>{
         q.preventDefault();
-        let details = ['title','singer','url'];
-        let Song = AV.Object.extend('Song');
-        let song = new Song();
+        let details = ['title','singer','url']
         details.map((item)=>{
           let i = q.currentTarget.querySelector(`.form > .formRow > input[id=${item}]`);
           let savVal = i.value;
-          song.set(item,savVal);
-          song.save().then(function(res){
-            console.log(res.attributes); //returns an obj {title:__,url:__,singer:__}
+          this.model.data[item] = savVal;
+          //song.set(item,savVal);
+        });
+        this.model.create(this.model.data)
+          .then((res)=>{
+            let {id,attributes} = res;
+            this.model.data = {id, ...attributes};
+            //Object.assign(this.data,res.attributes); // it would replace original input data;
+            this.activateSongLi();
+            this.resetForm();
           },function(err){
             console.error(err);
-          })
-        })
+          });
       })
-    }
+    },
+    activateSongLi(){
+      if(this.model.data.title){
+        console.log(window.eventHub.events);
+        window.eventHub.emit('save',this.model.data);
+        console.log(1)
+      }
+    },
+    resetForm(){
+      this.view.render({});
+    },
 
   }
   controller.init(view,model);

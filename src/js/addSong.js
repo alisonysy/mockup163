@@ -16,8 +16,11 @@
       this.view = view;
       this.model = model;
       this.view.render();
-      window.eventHub.on('upload',(data)=>{
+      window.eventHub.on('new',(data)=>{
         this.activate();
+      });
+      window.eventHub.on('save',()=>{
+        this.deactivate();
       })
     },
     activate(){
