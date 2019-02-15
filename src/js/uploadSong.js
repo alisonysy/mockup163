@@ -73,8 +73,17 @@
                   //  }
                   // 查看简单反馈
               var domain = up.getOption('domain');
-              var res = parseJSON(info.response);
+              var res = JSON.parse(info.response);
               var sourceLink = "http://" + domain +"/"+ encodeURIComponent(res.key); 
+              /*console.log(res);
+              window.eventHub.publish('songLi',function(){
+                return {title:res.key,url:sourceLink} // it does return an object
+              })
+              console.log(window.eventHub.events)*/
+              window.eventHub.emit('new', {
+              url: sourceLink,
+              title: res.key
+              }) 
           },
           'Error': (up, err, errTip)=> {
                   //上传出错时，处理相关的事情

@@ -18,7 +18,7 @@
       <input type="submit" value="Save">
     </form>
     `,
-    render(data={}){
+    render(data){ //data === {url:___,title:___}
       let placeholder = ['title','singer','url'];
       let template = this.template;
       placeholder.map((string)=>{
@@ -28,15 +28,24 @@
     }
   };
   let model = {
-
+    data:{},
   };
   let controller = {
     init(view,model){
       this.view=view;
       this.model = model;
-      this.view.render(this.model.data);
-      window.eventHub.on('upload',(data)=>{
-        this.view.render(data)
+      this.view.render({});
+      //subscribe to new song uploading event
+      window.eventHub.on('new', (data)=>{ //data === {url:___,title:___}
+        this.view.render(data);
+        /*if(this.model.data.id){
+          this.model.data = {
+            name: '', url: '', id: '', singer: '', lyrics: ''
+          }
+        }else{
+          Object.assign(this.model.data, data)
+        }
+        this.view.render(this.model.data)*/
       })
     },
     bindEvent(){
