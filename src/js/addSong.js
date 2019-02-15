@@ -16,7 +16,7 @@
       this.view = view;
       this.model = model;
       this.view.render();
-      window.eventHub('upload',(data)=>{
+      window.eventHub.on('upload',(data)=>{
         this.activate();
       })
     },

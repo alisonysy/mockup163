@@ -13,7 +13,7 @@
       </div>
       <div class="formRow">
         <label for="url">URL</label>
-        <input type="text" id="url" name="url" value="__url__">
+        <input type="text" id="url" name="url" value="__url__" required>
       </div>
       <input type="submit" value="Save">
     </form>
@@ -46,12 +46,25 @@
           Object.assign(this.model.data, data)
         }
         this.view.render(this.model.data)*/
-      })
+      });
+      this.bindEvent();
     },
     bindEvent(){
       $(this.view.el).on('submit','form',(q)=>{
         q.preventDefault();
-        let 
+        let details = ['title','singer','url'];
+        let Song = AV.Object.extend('Song');
+        let song = new Song();
+        details.map((item)=>{
+          let i = q.currentTarget.querySelector(`.form > .formRow > input[id=${item}]`);
+          let savVal = i.value;
+          song.set(item,savVal);
+          song.save().then(function(res){
+            console.log(res.attributes); //returns an obj {title:__,url:__,singer:__}
+          },function(err){
+            console.error(err);
+          })
+        })
       })
     }
 
