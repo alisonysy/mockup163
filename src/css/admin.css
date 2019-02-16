@@ -13,6 +13,7 @@ body{
 /*layout*/
 aside{
   width:20%;
+  height: 100%;
 }
 
 main{
@@ -34,22 +35,23 @@ aside > .addSong{
 }
 
 aside > .addSong.active{
-  background: linear-gradient(to right, #C6FFDD,#FBD786,#f7797d);
+  background: #FBD786;
   color:white;
   text-shadow: 2px 0px 10px rgba(11,11,11,0.6);
-  border-radius: 1rem;
+  box-shadow: none;
+  /*border-radius: 1rem;*/
 }
 
-aside > ul.songLi{
+aside >  ul.songLi{
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
   height: 80%;
-
+  overflow: auto;
 }
 
-aside > ul.songLi > li{
-  flex-grow: 1;
+aside >  ul.songLi > li{
+  flex:0 0 3rem;
   padding: 0.3rem;
   padding-left: 1.2rem;
   box-shadow: 3px 0px 15px -8px rgba(0,0,0,0.75);
