@@ -80,7 +80,6 @@
             this.model.data = {id, ...attributes};
             //Object.assign(this.data,res.attributes); // it would replace original input data;
             this.activateSongLi();
-            this.resetForm();
           },function(err){
             console.error(err);
           });
@@ -90,12 +89,14 @@
       if(this.model.data.title){
         console.log(window.eventHub.events);
         window.eventHub.emit('save',this.model.data);
-        console.log(1)
+        console.log(1);
+        this.view.renderDefault();
+        console.log(2321);
+        window.eventHub.emit('cancel',{});
+        console.log(2341);
       }
     },
-    resetForm(){
-      this.view.render({});
-    },
+
 
   }
   controller.init(view,model);

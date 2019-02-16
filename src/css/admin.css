@@ -25,21 +25,15 @@ main{
 }
 
 /* aside */
-aside > .addSong{
+aside > .songLi-title{
   height: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 3px 0px 15px -8px rgba(0,0,0,0.75);
-  cursor: pointer;
-}
-
-aside > .addSong.active{
-  background: #FBD786;
+  background:linear-gradient(to top,#04031d,#1c194c);
   color:white;
-  text-shadow: 2px 0px 10px rgba(11,11,11,0.6);
-  box-shadow: none;
-  /*border-radius: 1rem;*/
+  text-shadow: 2px 0px 5px rgba(255,255,255,0.6);
+  box-shadow: 5px 0px 10px -1px rgba(198, 177, 240,.75);
 }
 
 aside >  ul.songLi{
@@ -48,15 +42,21 @@ aside >  ul.songLi{
   justify-content: flex-start;
   height: 80%;
   overflow: auto;
+  background: linear-gradient(to top,#04031d,#1c194c);
+  box-shadow: 5px 4px 10px -1px rgba(198, 177, 240,.75);
 }
-
+aside >  ul.songLi::-webkit-scrollbar { width: 0 !important }
 aside >  ul.songLi > li{
   flex:0 0 3rem;
-  padding: 0.3rem;
-  padding-left: 1.2rem;
-  box-shadow: 3px 0px 15px -8px rgba(0,0,0,0.75);
+  padding: 2rem 1.2rem;
+  margin:1px 0;
+  background: #4925bf2a;
+  border-radius: 0.3rem;
+  /*background: linear-gradient(to top,#1c179e 5%,#4925bf 10%,#4925bf 97%,#c6b1f0 99%);*/
   display: flex;
   align-items: center;
+  color:white;
+
 }
 
 /* inside <main> -- Drag file area*/
