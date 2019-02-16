@@ -8,15 +8,14 @@
   <body>
     <aside>
       <div class="addSong"></div>
-
       <ul class="songLi"></ul>
-
     </aside>
     <main>
-      <div id="addDrop" class="addDrop" >
-        <span>Drag your file here or</span>
-        <div id="instructions">Click to upload your file</div>
-        progress: <span id="progressText"></span>
+      <div id="addDrop" class="addDrop active" >
+        <span>拖动本地文件到此区域 <br> 或者</span>
+        <div id="button">点击选择本地文件</div>
+        <span id="progressText"></span>
+        <span class="instructions">目前仅允许从本地上传，暂不支持线上文件</span>
       </div>
       <div class="songDetail">
       </div>
@@ -31,10 +30,16 @@
 
     <!--rendering-->
     <script src="./js/eventHub.js"></script>
-    <script src="./js/addSong.js"></script>
+    <script src="./js/addSong-1.js"></script>
     <script src="./js/songLi.js"></script>
+    <script src="./js/addSong.js"></script>
     <script src="./js/uploadSong.js"></script>
     <script src="./js/songForm.js"></script>
-
+    <script>
+    var button = document.getElementById('button');
+    button.addEventListener('click',(q)=>{
+      console.log(q);
+    })
+    </script>
   </body>
 </html>

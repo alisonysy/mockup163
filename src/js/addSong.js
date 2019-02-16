@@ -1,11 +1,18 @@
 {
   let view={
-    el:'.addSong',
+    el:'.addDrop',
     template:`
-    Add New Song
+    <span>拖动本地文件到此区域 <br> 或者</span>
+    <div id="button">点击选择本地文件</div>
+    <span id="progressText"></span>
+    <span class="instructions">目前仅允许从本地上传，暂不支持线上文件</span>
     `,
     render(data){
       $(this.el).html(this.template);
+      $(this.el).css("display","flex");
+    },
+    renderEdit(){
+      $(this.el).css("display","none");
     }
   }
   let model={}
@@ -16,20 +23,13 @@
       this.view = view;
       this.model = model;
       this.view.render();
-      this.activate();
       window.eventHub.on('new',(data)=>{
-        this.activate();
+        this.view.renderEdit();
       });
-      window.eventHub.on('save',()=>{
-        this.deactivate();
+      window.eventHub.on('cancel',(data)=>{
+        this.view.render();
       })
     },
-    activate(){
-      $(this.view.el).addClass('active');
-    },
-    deactivate(){
-      $(this.view.el).removeClass('active');
-    }
   }
   controller.init(view,model);
 }

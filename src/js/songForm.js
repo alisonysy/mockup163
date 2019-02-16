@@ -3,28 +3,39 @@
     el:'.songDetail',
     template:`
     <form class="form">
+      <div class="status">__status__</div>
       <div class="formRow">
-        <label for="title">Title</label>
+        <label for="title">歌名</label>
         <input type="text" id="title" name="title" value="__title__">
       </div>
       <div class="formRow">
-        <label for="singer">Singer</label>
+        <label for="singer">歌手</label>
         <input type="text" id="singer" name="singer" value="__singer__">
       </div>
       <div class="formRow">
         <label for="url">URL</label>
         <input type="text" id="url" name="url" value="__url__" required>
       </div>
-      <input type="submit" value="Save">
+      <input type="submit" value="保存">
+      <button type="button" id="cancel">取消</button>
     </form>
     `,
-    render(data){ //data === {url:___,title:___}
+    renderNew(data){ //data === {url:___,title:___}
+      if(data.title){$(this.el).css("display","flex");}
       let placeholder = ['title','singer','url'];
       let template = this.template;
       placeholder.map((string)=>{
         template = template.replace(`__${string}__`,data[string]||'');
       })
+      template = template.replace(`__status__`,'新建歌曲');
       $(this.el).html(template);
+    },
+    renderDefault(){
+      $(this.el).css("display","none");
+      //$(this.el).attr("hidden")
+    },
+    renderEdit(){
+      let template = this.template.replace(`__status__`,'编辑歌曲');
     }
   };
   let model = {
@@ -42,12 +53,16 @@
     init(view,model){
       this.view=view;
       this.model = model;
-      this.view.render({});
+      this.view.renderNew({});
       //subscribe to new song uploading event
       window.eventHub.on('new', (data)=>{ //data === {url:___,title:___}
-        this.view.render(data);
+        this.view.renderNew(data);
       });
       this.bindEvent();
+      $(this.view.el).on('click','button',()=>{
+        this.view.renderDefault();
+        window.eventHub.emit('cancel',{});
+      })
     },
     bindEvent(){
       $(this.view.el).on('submit','form',(q)=>{

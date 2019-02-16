@@ -11,11 +11,14 @@
       this.view = view;
       this.model = model;
       this.initQiniu();
+      window.eventHub.on('cancel',()=>{
+        this.initQiniu();
+      })
     },
     initQiniu(){
       var uploader = Qiniu.uploader({
         runtimes: 'html5,flash,html4',      // 上传模式，依次退化
-        browse_button: this.view.find('#instructions'),         // 上传选择的点选按钮，必需
+        browse_button: this.view.find('div#button'),         // 上传选择的点选按钮，必需
         // 在初始化时，uptoken，uptoken_url，uptoken_func三个参数中必须有一个被设置
         // 切如果提供了多个，其优先级为uptoken > uptoken_url > uptoken_func
         // 其中uptoken是直接提供上传凭证，uptoken_url是提供了获取上传凭证的地址，如果需要定制获取uptoken的过程则可以设置uptoken_func
@@ -75,7 +78,7 @@
               var domain = up.getOption('domain');
               var res = JSON.parse(info.response);
               var sourceLink = "http://" + domain +"/"+ encodeURIComponent(res.key); 
-              /*console.log(res);
+              /*console.log(res); it has only key and hash;
               window.eventHub.publish('songLi',function(){
                 return {title:res.key,url:sourceLink} // it does return an object
               })
@@ -95,7 +98,7 @@
           'Key': (up, file)=> {
               // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
               // 该配置必须要在unique_names: false，save_key: false时才生效
-              var key = file.name;
+              var key = file.name +'-' + Date.now() + '-'+parseInt(Math.random()*100000);
               // do something with key here
               return key
           }

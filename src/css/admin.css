@@ -60,52 +60,79 @@ aside >  ul.songLi > li{
 }
 
 /* inside <main> -- Drag file area*/
-main > .addDrop{
-  width:20rem;
-  height:15rem;
-  border: 2px dashed #FBD786 ;
+main > .addDrop.active{
+  width:80%;
+  height:80%;
+  border: 2px dashed #c6b1f0 ;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color:#888;
+  justify-content: center;
+  color:#c6b1f0;
 }
 
-main > .addDrop > span{
-  margin-top:20px;
-  color:#888;
+main > .addDrop.active > span{
+  text-align: center;
+  font-size: 1.5rem;
+  color:#c6b1f0;
 }
 
-main > .addDrop > div#instructions{
+main > .addDrop.active > div#button{
   text-align: center;
   margin:10px;
   padding: 10px;
-  background: linear-gradient(to right, #C6FFDD,#FBD786,#f7797d);
+  background: #4925bf;
+  /*background: linear-gradient(to right, #C6FFDD,#FBD786,#f7797d);
+  box-shadow: 2px 0px 5px -1px rgba(0,0,0,0.5);*/
   color:white;
-  text-shadow: 2px 0px 10px rgba(11,11,11,0.6);
   border-radius: 10px;
-  box-shadow: 2px 0px 5px -1px rgba(0,0,0,0.5);
   cursor: pointer;
+  text-shadow: 2px 0px 10px rgba(11,11,11,0.6);
 }
 
-main > .addDrop > span#progressText{
-  margin-top: 8px;
+main > .addDrop.active > div#button:hover{
+  background: linear-gradient(to right,#04031d,#1c194c,#1c179e);
+  box-shadow: 2px 0px 5px -1px rgba(0,0,0,0.5);
+  transform: scale(1.1);
+}
+
+main > .addDrop.active > span#progressText{
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  height: 1.5rem;
+  color:#4925bf;
+}
+
+main > .addDrop.active > span.instructions{
+  font-size: 1rem;
 }
 
 /* inside <main> -- Song details area*/
 main > .songDetail{
-  width:25rem;
-  height:10rem;
-  border:2px solid #FBD786;
+  width:80%;
+  height:80%;
+  border: 2px dashed #c6b1f0 ;
   border-radius: 10px;
-  box-shadow: 2px 2px 18px -7px rgba(251,215,134,0.75);
-  margin-top: 2rem;
-  padding: 1rem;
+  display:none; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color:#c6b1f0;
 }
 
 main > .songDetail > .form{
   width: 100%;
   text-align: center;
+}
+
+main > .songDetail > .form > .status{
+  height: 1.5rem;
+  font-size: 1.2rem;
+  color: #4925bf;
+  margin-bottom: 1rem;
 }
 
 main > .songDetail > .form > .formRow{
@@ -115,15 +142,40 @@ main > .songDetail > .form > .formRow{
 
 main > .songDetail > .form > .formRow > label{
   display: inline-block;
-  width:20%;
+  width:10%;
+  text-align: center;
+  color:#4925bf;
 }
 
 main > .songDetail > .form > input[type=submit]{
   padding: 0.2rem;
-  background: #FBD786;
+  background: #4925bf;
   border:none;
   color: white;
   text-shadow: 2px 0px 10px rgba(11,11,11,0.6);
   cursor: pointer;
-  margin-top: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+main > .songDetail > .form > input[type=submit]:hover{
+  background: linear-gradient(to right,#04031d,#1c194c,#1c179e);
+  box-shadow: 2px 0px 5px -1px rgba(0,0,0,0.5);
+  transform: scale(1.1);
+}
+
+main > .songDetail > .form > button#cancel{
+  padding: 0.2rem;
+  background: #4925bf;
+  border:none;
+  color: white;
+  text-shadow: 2px 0px 10px rgba(11,11,11,0.6);
+  cursor: pointer;
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+main > .songDetail > .form > button#cancel:hover{
+  background: linear-gradient(to right,#04031d,#1c194c,#1c179e);
+  box-shadow: 2px 0px 5px -1px rgba(0,0,0,0.5);
+  transform: scale(1.1);
 }
