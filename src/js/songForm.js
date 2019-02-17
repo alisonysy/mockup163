@@ -34,9 +34,16 @@
       $(this.el).css("display","none");
       //$(this.el).attr("hidden")
     },
-    renderEdit(){
-      let template = this.template.replace(`__status__`,'编辑歌曲');
-    }
+    renderEdit(data){
+      if(data.title){$(this.el).css("display","flex");}
+      let placeholder = ['title','singer','url'];
+      let template = this.template;
+      placeholder.map((string)=>{
+        template = template.replace(`__${string}__`, data[string] ||'');
+      })
+      template = template.replace(`__status__`,'编辑歌曲');
+      $(this.el).html(template);
+    },
   };
   let model = {
     data:{id:'',title:'',singer:'',url:''},
@@ -58,6 +65,11 @@
       window.eventHub.on('new', (data)=>{ //data === {url:___,title:___}
         this.view.renderNew(data);
       });
+      window.eventHub.on('edit',(data)=>{
+        console.log('data is');
+        console.log(data);
+        this.view.renderEdit(data);
+      })
       this.bindEvent();
       $(this.view.el).on('click','button',()=>{
         this.view.renderDefault();
@@ -74,6 +86,7 @@
           this.model.data[item] = savVal;
           //song.set(item,savVal);
         });
+        if()
         this.model.create(this.model.data)
           .then((res)=>{
             let {id,attributes} = res;
@@ -93,7 +106,6 @@
         this.view.renderDefault();
         console.log(2321);
         window.eventHub.emit('cancel',{});
-        console.log(2341);
       }
     },
 

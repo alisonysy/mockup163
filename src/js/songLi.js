@@ -1,7 +1,27 @@
 {
   let view = {
     el:'.songLi',
-    template:``,
+    infoTemplate:`
+    <div class="songLi-info">
+      <table>
+        <tbody>
+          <tr>
+            <td>歌曲</td><td>__title__</td>
+          </tr>
+          <tr>
+            <td>歌手</td><td>__singer__</td>
+          </tr>
+          <tr>
+            <td>URL</td><td>__url__</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="buttons">
+        <button type="button" id="edit">编辑</button>
+        <button type="button" id="del">删除</button>
+      </div>
+    </div>
+    `,
     render(data){
       var $el = $(this.el);
       let id=[];
@@ -27,6 +47,31 @@
         $(this.el).prepend('');
       }
       //$(this.el).html(this.template);
+    },
+    renderInfo(el,data){
+      if(data){
+        let child = document.createElement('div');
+        if(el.className !== 'active'){
+          //child.className = "info-wrapper";
+          el.after(child);
+          let template = this.infoTemplate
+          let placeholder = ['title','singer','url'];
+          placeholder.map((i)=>{
+            template = template.replace(`__${i}__`,data[i] || '')
+          });
+          child.outerHTML=template;
+          let div = $(el).next('div')[0];
+          console.log(el);
+          console.log(div);
+          $(div).hide().offset();
+          $(div).animate({opacity:"toggle"},2000)
+          $(el).toggleClass('active');
+        }else{
+          $(el).toggleClass('active');
+          let info = el.nextElementSibling;
+          info.remove();
+        }
+      }
     }
   };
   let model={
@@ -49,7 +94,10 @@
       },(err)=>{console.error(err)})
     },
     findOne(el){
-
+      let query = new AV.Query('Song');
+      return query.get(el.dataset.id).then((res)=>{
+        this.data = res.attributes;
+      },(err)=>{console.error(err)})
     }
   };
   let controller ={
@@ -57,6 +105,7 @@
       this.view = view;
       this.model = model;
       this.model.findAll();
+      this.bindEvent();
       window.eventHub.on('find',(data)=>{
         this.view.render(data);
       })
@@ -69,8 +118,25 @@
     },
     bindEvent(){
       $(this.view.el).on('click','li',(q)=>{
-
+        let curLi = q.currentTarget;
+        this.model.findOne(curLi)
+          .then(()=>{
+            this.view.renderInfo(curLi,this.model.data);
+          },(err)=>{console.error(err)})
+            
+      });
+      //let $select = $(this.view.el).find('.songLi-info > button[id="edit"]');
+      $(this.view.el).on('click','.songLi-info > .buttons > button[id="edit"]',(q)=>{
+        let cur = q.currentTarget;
+        let curLi = $(cur).parent().parent().prev()[0];
+        this.model.findOne(curLi)
+          .then(()=>{
+            console.log(this.model.data)
+            let data = this.model.data;
+            window.eventHub.emit('edit',data);
+          },(err)=>{console.error(err)})
       })
+      
     }
   }
   controller.init(view,model);

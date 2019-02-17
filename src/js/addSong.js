@@ -26,6 +26,9 @@
       window.eventHub.on('new',(data)=>{
         this.view.renderEdit();
       });
+      window.eventHub.on('edit',(data)=>{
+        this.view.renderEdit();
+      })
       window.eventHub.on('cancel',(data)=>{
         this.view.render();
       })

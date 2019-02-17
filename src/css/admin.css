@@ -45,6 +45,8 @@ aside >  ul.songLi{
   background: linear-gradient(to top,#04031d,#1c194c);
   box-shadow: 5px 4px 10px -1px rgba(198, 177, 240,.75);
 }
+
+
 aside >  ul.songLi::-webkit-scrollbar { width: 0 !important }
 aside >  ul.songLi > li{
   flex:0 0 3rem;
@@ -56,7 +58,67 @@ aside >  ul.songLi > li{
   display: flex;
   align-items: center;
   color:white;
+  cursor: pointer;
+}
 
+aside >  ul.songLi > li:hover{
+  background: linear-gradient(to top,#4925bf2a,#4925bf63);
+}
+
+/* pop-up song info table*/
+aside >  ul.songLi > div.songLi-info{
+  background: linear-gradient(to top,#c6b1f049 99%,#c6b1f01e);
+  color:#fff;
+}
+
+
+aside >  ul.songLi > div.songLi-info > table {
+  display: table;
+  height: 8rem;
+  margin:2.3rem 1rem 0 1rem;
+  table-layout: fixed;
+  font-size: 0.8rem;
+  border-collapse: collapse;
+}
+
+aside >  ul.songLi > div.songLi-info > table > tbody > tr:hover{
+  background: linear-gradient(to top,#c6b1f01f,#c6b1f044);
+  border-radius: 2rem;
+}
+
+aside >  ul.songLi > div.songLi-info > table > tbody > tr >td:first-child{
+  width:2rem;
+}
+
+aside >  ul.songLi > div.songLi-info > table > tbody > tr >td:last-child{
+  word-wrap: wrap;
+  word-break: break-all;
+}
+
+aside >  ul.songLi > div.songLi-info > div.buttons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+aside >  ul.songLi > div.songLi-info > div.buttons > button{
+  padding: 0.2rem;
+  background: #4925bf;
+  border:none;
+  color: white;
+  text-shadow: 2px 0px 10px rgba(11,11,11,0.6);
+  cursor: pointer;
+  margin: 1rem 0;
+}
+
+aside >  ul.songLi > div.songLi-info > div.buttons > button:hover{
+  background: linear-gradient(to right,#04031d,#1c194c,#1c179e);
+  box-shadow: 2px 0px 5px -1px rgba(0,0,0,0.5);
+  transform: scale(1.1);
+}
+
+aside >  ul.songLi > div.songLi-info > div.buttons > button:last-child{
+  margin-left: 1rem;
 }
 
 /* inside <main> -- Drag file area*/
