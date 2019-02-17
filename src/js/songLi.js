@@ -102,7 +102,9 @@
         this.data.id = res.id;
       },(err)=>{console.error(err)})
     },
-
+    reset(){
+      this.data = {id:'',title:'',singer:'',url:''};
+    }
   };
   let controller ={
     init(view,model){
@@ -112,7 +114,7 @@
       this.bindEvent();
       window.eventHub.on('find',(data)=>{
         this.view.render(data);
-      })
+      });
       window.eventHub.on('save',(data)=>{ //{id,title,singer,url}
         Object.assign(this.model.data,data);
         let curLi = this.findLiWithId(data);
@@ -123,6 +125,7 @@
         }else{
           this.view.renderNew(data);
         }
+        this.model.reset();
       });
       
     },
@@ -132,6 +135,7 @@
         this.model.findOne(curLi)
           .then(()=>{
             this.view.renderInfo(curLi,this.model.data);
+            this.model.reset();
           },(err)=>{console.error(err)})
       });
       //let $select = $(this.view.el).find('.songLi-info > button[id="edit"]');
@@ -142,17 +146,16 @@
           .then(()=>{
             let data = this.model.data;
             window.eventHub.emit('edit',data);
+            this.model.reset();
           },(err)=>{console.error(err)})
       })
     },
     findLiWithId(data){//{id,title,singer,url}; this fn returns <li>
       let li = $(this.view.el).children();
-      console.log(li);
       var curLi;
       for(let i of li){
         if(data.id === i.dataset.id){
           curLi = i;
-          console.log(curLi)
           return curLi;
         }
       }

@@ -61,6 +61,9 @@
       song.set('singer',data.singer);
       song.set('url',data.url);
       return song.save();
+    },
+    reset(){
+      this.data = {id:'',title:'',singer:'',url:''}
     }
   };
   let controller = {
@@ -75,12 +78,12 @@
       window.eventHub.on('edit',(data)=>{
         this.view.renderEdit(data);
         this.model.data.id = data.id;
-        console.log(this.model.data);
       })
       this.bindEvent();
       $(this.view.el).on('click','button',()=>{
         this.view.renderDefault();
         window.eventHub.emit('cancel',{});
+        this.model.reset();
       })
     },
     bindEvent(){
@@ -120,6 +123,7 @@
     activateSongLi(){
       if(this.model.data.title){
         window.eventHub.emit('save',this.model.data);
+        this.model.reset();
         this.view.renderDefault();
         window.eventHub.emit('cancel',{});
       }
