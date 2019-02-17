@@ -54,6 +54,13 @@
       song.set('singer',data.singer);
       song.set('url',data.url);
       return song.save();
+    },
+    update(data){
+      let song = AV.Object.createWithoutData('Song',data.id);
+      song.set('title',data.title);
+      song.set('singer',data.singer);
+      song.set('url',data.url);
+      return song.save();
     }
   };
   let controller = {
@@ -66,9 +73,9 @@
         this.view.renderNew(data);
       });
       window.eventHub.on('edit',(data)=>{
-        console.log('data is');
-        console.log(data);
         this.view.renderEdit(data);
+        this.model.data.id = data.id;
+        console.log(this.model.data);
       })
       this.bindEvent();
       $(this.view.el).on('click','button',()=>{
@@ -84,10 +91,21 @@
           let i = q.currentTarget.querySelector(`.form > .formRow > input[id=${item}]`);
           let savVal = i.value;
           this.model.data[item] = savVal;
+          console.log(this.model.data);
           //song.set(item,savVal);
         });
-        if()
-        this.model.create(this.model.data)
+        if(this.model.data.id){
+          this.model.update(this.model.data)
+            .then((res)=>{
+              let {id,attributes} = res;
+              this.model.data = {id, ...attributes};
+              //Object.assign(this.data,res.attributes); // it would replace original input data;
+              this.activateSongLi();
+            },function(err){
+              console.error(err);
+            });
+        }else{
+          this.model.create(this.model.data)
           .then((res)=>{
             let {id,attributes} = res;
             this.model.data = {id, ...attributes};
@@ -96,15 +114,13 @@
           },function(err){
             console.error(err);
           });
+        };
       })
     },
     activateSongLi(){
       if(this.model.data.title){
-        console.log(window.eventHub.events);
         window.eventHub.emit('save',this.model.data);
-        console.log(1);
         this.view.renderDefault();
-        console.log(2321);
         window.eventHub.emit('cancel',{});
       }
     },

@@ -68,6 +68,8 @@
           $(el).toggleClass('active');
         }else{
           $(el).toggleClass('active');
+          let title = data.title;
+          $(el).text(title);
           let info = el.nextElementSibling;
           info.remove();
         }
@@ -97,8 +99,10 @@
       let query = new AV.Query('Song');
       return query.get(el.dataset.id).then((res)=>{
         this.data = res.attributes;
+        this.data.id = res.id;
       },(err)=>{console.error(err)})
-    }
+    },
+
   };
   let controller ={
     init(view,model){
@@ -111,8 +115,14 @@
       })
       window.eventHub.on('save',(data)=>{ //{id,title,singer,url}
         Object.assign(this.model.data,data);
-        console.log(this.model.data);
-        this.view.renderNew(data);
+        let curLi = this.findLiWithId(data);
+        console.log('returned curLi')
+        if(curLi){
+          this.view.renderInfo(curLi,data);
+          console.log('rendered')
+        }else{
+          this.view.renderNew(data);
+        }
       });
       
     },
@@ -123,7 +133,6 @@
           .then(()=>{
             this.view.renderInfo(curLi,this.model.data);
           },(err)=>{console.error(err)})
-            
       });
       //let $select = $(this.view.el).find('.songLi-info > button[id="edit"]');
       $(this.view.el).on('click','.songLi-info > .buttons > button[id="edit"]',(q)=>{
@@ -131,12 +140,23 @@
         let curLi = $(cur).parent().parent().prev()[0];
         this.model.findOne(curLi)
           .then(()=>{
-            console.log(this.model.data)
             let data = this.model.data;
             window.eventHub.emit('edit',data);
           },(err)=>{console.error(err)})
       })
-      
+    },
+    findLiWithId(data){//{id,title,singer,url}; this fn returns <li>
+      let li = $(this.view.el).children();
+      console.log(li);
+      var curLi;
+      for(let i of li){
+        if(data.id === i.dataset.id){
+          curLi = i;
+          console.log(curLi)
+          return curLi;
+        }
+      }
+      return curLi;
     }
   }
   controller.init(view,model);
