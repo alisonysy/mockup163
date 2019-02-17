@@ -31,6 +31,9 @@
       })
       window.eventHub.on('cancel',(data)=>{
         this.view.render();
+      });
+      window.eventHub.on('delete',(id)=>{
+        this.view.render();
       })
     },
   }

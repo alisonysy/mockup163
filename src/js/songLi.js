@@ -25,16 +25,21 @@
     render(data){
       var $el = $(this.el);
       let id=[];
-      data.map(function(i){
-        if(i.title){
-          let title = i.title;
-          $el.prepend(`<li>${title}</li>`);
+      if(data){
+        data.map(function(i){
+          if(i.title){
+            let title = i.title;
+            $el.prepend(`<li>${title}</li>`);
+          }
+          return id.push(i.id);
+        })
+        let li = $el.find('li');
+        for(let i of li){
+          i.setAttribute('data-id',id.pop())
         }
-        return id.push(i.id);
-      })
-      let li = $el.find('li');
-      for(let i of li){
-        i.setAttribute('data-id',id.pop())
+      }else{
+        $el.html('');
+        console.log('empty')
       }
     },
     renderNew(data){
@@ -102,6 +107,16 @@
         this.data.id = res.id;
       },(err)=>{console.error(err)})
     },
+    delete(el){
+      let id = el.dataset.id;
+      console.log(id);
+      let del = AV.Object.createWithoutData('Song', id);
+      return del.destroy().then((res)=>{
+        this.reset();
+        let id = res.id;
+        window.eventHub.emit('delete',id);
+      },(err)=>{console.error(err)})
+    },
     reset(){
       this.data = {id:'',title:'',singer:'',url:''};
     }
@@ -138,7 +153,6 @@
             this.model.reset();
           },(err)=>{console.error(err)})
       });
-      //let $select = $(this.view.el).find('.songLi-info > button[id="edit"]');
       $(this.view.el).on('click','.songLi-info > .buttons > button[id="edit"]',(q)=>{
         let cur = q.currentTarget;
         let curLi = $(cur).parent().parent().prev()[0];
@@ -148,6 +162,18 @@
             window.eventHub.emit('edit',data);
             this.model.reset();
           },(err)=>{console.error(err)})
+      });
+      $(this.view.el).on('click','.songLi-info > .buttons > button[id="del"]',(q)=>{
+        let cur = q.currentTarget;
+        let curLi = $(cur).parent().parent().prev()[0];
+        this.model.delete(curLi)
+          .then(()=>{
+            console.log('to render')
+            this.view.render('');
+            console.log('rendering')
+            this.model.findAll();
+            console.log('rendered')
+          })
       })
     },
     findLiWithId(data){//{id,title,singer,url}; this fn returns <li>

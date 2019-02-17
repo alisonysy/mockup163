@@ -20,6 +20,11 @@
       <button type="button" id="cancel">取消</button>
     </form>
     `,
+    delNotification:`
+      <div class="notify">
+        <p>已成功删除歌曲</p>
+      </div>
+    `,
     renderNew(data){ //data === {url:___,title:___}
       if(data.title){$(this.el).css("display","flex");}
       let placeholder = ['title','singer','url'];
@@ -44,6 +49,17 @@
       template = template.replace(`__status__`,'编辑歌曲');
       $(this.el).html(template);
     },
+    renderNotification(){
+      console.log('1-0')
+      let main = $('main');
+      main.append(this.delNotification);
+      let notify = $('main div:last-child')[0];
+      setTimeout(()=>{
+        notify.remove();
+        console.log('removed');
+        window.eventHub.emit('cancel',{});
+      },1500);
+    }
   };
   let model = {
     data:{id:'',title:'',singer:'',url:''},
@@ -78,6 +94,10 @@
       window.eventHub.on('edit',(data)=>{
         this.view.renderEdit(data);
         this.model.data.id = data.id;
+      });
+      window.eventHub.on('delete',(id)=>{
+        this.view.renderDefault();
+        this.view.renderNotification();
       })
       this.bindEvent();
       $(this.view.el).on('click','button',()=>{

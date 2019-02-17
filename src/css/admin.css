@@ -241,3 +241,26 @@ main > .songDetail > .form > button#cancel:hover{
   box-shadow: 2px 0px 5px -1px rgba(0,0,0,0.5);
   transform: scale(1.1);
 }
+
+/* deletion notification */
+div.notify{
+  position: absolute;
+  width:15rem;
+  height:5rem;
+  top:3rem;
+  left:50%;
+  transform: translateX(-7.5rem);
+  background: linear-gradient(45deg,#04031d,#1c194c 75%,#1c179e);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 2px 2px 5px -1px rgba(0,0,0,0.7);
+}
+
+div.notify > p{
+  margin:0 1rem;
+  color:#fff;
+  letter-spacing: 0.5rem;
+  text-shadow: 2px 0px 10px rgba(11,11,11,0.6);
+  text-align: center;
+}
