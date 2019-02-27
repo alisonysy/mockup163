@@ -143,6 +143,10 @@ h2.recom::before{
   padding-bottom: 1rem;
 }
 
+.recom-playList > ul:last-of-type{
+  margin-bottom: 1rem;
+}
+
 .recom-playList > ul > li {
   width:32.5%;
 }
@@ -165,7 +169,6 @@ h2.recom::before{
   display: flex;
   width:100%;
   height: 4rem;
-
   position: relative;
 }
 
@@ -180,11 +183,12 @@ h2.recom::before{
 }
 
 .song-wrapper{
-  width:90%;
+  width:85%;
 }
 
 .play{
-  width:10%;
+  width:15%;
+  text-align: center;
 }
 
 .play > svg.icon{

@@ -1,7 +1,17 @@
 {
   let view = {
     el:'nav>ul>li',
-    page:'[data-p]'
+    page:'[data-p]',
+    switchPage(data){
+      let curPage = data[0].dataset.page;
+      let pageList = $(this.page);
+      for(var element of pageList){
+        if($(element).hasClass(curPage)){
+          $(element).addClass('displayed').siblings().removeClass('displayed')
+          console.log('page switched')
+        }
+      }
+    }
   }
   let model = {}
   let controller={
@@ -12,14 +22,7 @@
       this.model = model;
       this.bindEvent();
       window.eventHub.on('selectPage',(data)=>{
-        let curPage = data[0].dataset.page;
-        let pageList = $(this.view.page);
-        for(var element of pageList){
-          if($(element).hasClass(curPage)){
-            $(element).addClass('displayed').siblings().removeClass('displayed')
-            console.log('page switched')
-          }
-        }
+        this.view.switchPage(data);
       })
     },
     bindEvent(){
