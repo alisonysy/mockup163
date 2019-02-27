@@ -1,0 +1,70 @@
+/* reset */
+*{padding: 0;margin: 0;box-sizing: border-box;}
+ul,ol{list-style: none;}
+a{text-decoration: none;}
+
+html{font-size: 14px;}
+body{width:100vw;background: linear-gradient(to top,#04031d,#1c194c) no-repeat;}
+
+.clearfix::after{
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* icon setup */
+.icon {
+  
+  vertical-align: -0.15em;
+  overflow: hidden;
+}
+
+/* import fonts */
+@font-face{
+  font-family: 'Monad-Heading';
+  src:url("../fonts/Monad.otf") format('opentype');
+}
+
+/* Logo and Download */
+.top-wrapper{
+  height: 4.6rem;
+  background: linear-gradient(to right,#4925bf5b,#4925bf8f);
+  width: 100%;
+}
+
+.logo{
+  float: left;
+  width: 70%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.logo > svg{
+  fill:#fff;
+  width: 2rem; height: 2rem;
+  margin: auto 0.5rem auto 1rem;
+}
+
+.logo > h1{
+  font-family: 'Monad-Heading';
+  color:#fff;
+}
+
+button.downloadApp{
+  float: right;
+  width: 26%;
+  outline: none;
+  background: none;
+  color: #c6b1f0;
+  border: 1px solid rgb(198, 177, 240);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  margin:1.2rem 4% 1.2rem 0;
+}
+
+button.downloadApp:focus{
+  box-shadow: inset 1px 1px 5px 2px rgba(28,25,76,0.8);
+  border-color: #c6b1f096;
+}
+
