@@ -101,10 +101,11 @@ nav>ul>li{
   line-height: 3rem;
   text-align: center;
   color:#c6b1f0;
+  z-index: 2;
 }
 
 nav>ul>li.active{
-  border-bottom: 2px solid #c6b1f0;
+  border-bottom: 2px solid #fff;
   color:#fff;
 }
 
@@ -202,4 +203,22 @@ h2.recom::before{
 .song-wrapper > h6::before{
   content:''; /* data- attribute */
   display: inline-block;
+}
+
+/* page2 - Popular song list */
+section.page2{
+  display: none;
+}
+
+section.page2.displayed{
+  display: block;
+}
+
+/* page3 - Search */
+section.page3{
+  display: none;
+}
+
+section.page3.displayed{
+  display: block;
 }

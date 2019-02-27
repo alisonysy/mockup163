@@ -1,6 +1,7 @@
 {
   let view = {
-    el:'nav>ul>li'
+    el:'nav>ul>li',
+    page:'[data-p]'
   }
   let model = {}
   let controller={
@@ -9,16 +10,23 @@
     init(view,model){
       this.view = view;
       this.model = model;
-      this.bindEvent()
+      this.bindEvent();
+      window.eventHub.on('selectPage',(data)=>{
+        let curPage = data[0].dataset.page;
+        let pageList = $(this.view.page);
+        for(var element of pageList){
+          if($(element).hasClass(curPage)){
+            $(element).addClass('displayed').siblings().removeClass('displayed')
+            console.log('page switched')
+          }
+        }
+      })
     },
     bindEvent(){
-      let v = $(this.view.el);
-      console.log(v);
       $(this.view.el).on('click',function(e){
         let cur = $(e.currentTarget);
-        console.log(cur);
         cur.addClass('active').siblings().removeClass('active');
-        console.log('done')
+        window.eventHub.emit('selectPage',cur);
       })
     }
   }
