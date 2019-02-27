@@ -194,6 +194,10 @@ h2.recom::before{
 
 .song-wrapper > h4{
   font-size: 1.2rem;
+  display: -webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .song-wrapper > h6{
