@@ -100,15 +100,22 @@ nav>ul>li{
   height: 100%;
   line-height: 3rem;
   text-align: center;
+  color:#c6b1f0;
 }
 
 nav>ul>li.active{
   border-bottom: 2px solid #c6b1f0;
+  color:#fff;
 }
 
 /* page1 - Recommendation PlayList */
 section.page1{
+  display: none;
   padding-top: 1.5rem;
+}
+
+section.page1.displayed{
+  display: block;
 }
 
 /* headings */
