@@ -12,6 +12,9 @@
             <td>歌手</td><td>__singer__</td>
           </tr>
           <tr>
+            <td>专辑</td><td>__album__</td>
+          </tr>
+          <tr>
             <td>URL</td><td>__url__</td>
           </tr>
         </tbody>
@@ -60,7 +63,7 @@
           //child.className = "info-wrapper";
           el.after(child);
           let template = this.infoTemplate
-          let placeholder = ['title','singer','url'];
+          let placeholder = ['title','singer','url','album'];
           placeholder.map((i)=>{
             template = template.replace(`__${i}__`,data[i] || '')
           });
@@ -82,7 +85,7 @@
     }
   };
   let model={
-    data:{id:'',title:'',singer:'',url:''},
+    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:''},
     db_data:[],//array[{id,url,singer,title},{id,url,singer,title}...]
     findAll(){
       let query = new AV.Query('Song');
@@ -93,7 +96,9 @@
           item.id = i.id;
           item.title = i.attributes["title"];
           item.singer = i.attributes["singer"];
+          item.album = i.attributes["album"];
           item.url = i.attributes["url"];
+          item.isHQ = i.attributes["isHQ"];
           return songItem.push(item);
         })
         this.db_data = songItem;
@@ -103,6 +108,7 @@
     findOne(el){
       let query = new AV.Query('Song');
       return query.get(el.dataset.id).then((res)=>{
+        console.log(res)
         this.data = res.attributes;
         this.data.id = res.id;
       },(err)=>{console.error(err)})
@@ -118,7 +124,7 @@
       },(err)=>{console.error(err)})
     },
     reset(){
-      this.data = {id:'',title:'',singer:'',url:''};
+      this.data = {id:'',title:'',singer:'',album:'',url:'',isHQ:''};
     }
   };
   let controller ={
@@ -130,7 +136,7 @@
       window.eventHub.on('find',(data)=>{
         this.view.render(data);
       });
-      window.eventHub.on('save',(data)=>{ //{id,title,singer,url}
+      window.eventHub.on('save',(data)=>{ //{id,title,singer,url,album,isHQ}
         Object.assign(this.model.data,data);
         let curLi = this.findLiWithId(data);
         console.log('returned curLi')
@@ -176,7 +182,7 @@
           })
       })
     },
-    findLiWithId(data){//{id,title,singer,url}; this fn returns <li>
+    findLiWithId(data){//{id,title,singer,url,album,isHQ}; this fn returns <li>
       let li = $(this.view.el).children();
       var curLi;
       for(let i of li){

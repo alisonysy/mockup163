@@ -73,7 +73,7 @@ aside >  ul.songLi > div.songLi-info{
 
 aside >  ul.songLi > div.songLi-info > table {
   display: table;
-  height: 8rem;
+  height: 12rem;
   margin:2.3rem 1rem 0 1rem;
   table-layout: fixed;
   font-size: 0.8rem;

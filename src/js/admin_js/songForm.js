@@ -13,8 +13,20 @@
         <input type="text" id="singer" name="singer" value="__singer__">
       </div>
       <div class="formRow">
+        <label for="album">专辑</label>
+        <input type="text" id="album" name="album" value="__album__">
+      </div>
+      <div class="formRow">
         <label for="url">URL</label>
         <input type="text" id="url" name="url" value="__url__" required>
+      </div>
+      <div class="formRow">
+        <label for="HQ1">高音质</label>
+        <input type="radio" id="HQ1" name="isHQ" value="1" __checked1__>
+      </div>
+      <div class="formRow">
+        <label for="HQ0">标准音质</label>
+        <input type="radio" id="HQ0" name="isHQ" value="0" __checked0__>
       </div>
       <input type="submit" value="保存">
       <button type="button" id="cancel">取消</button>
@@ -27,7 +39,7 @@
     `,
     renderNew(data){ //data === {url:___,title:___}
       if(data.title){$(this.el).css("display","flex");}
-      let placeholder = ['title','singer','url'];
+      let placeholder = ['title','singer','url','album'];
       let template = this.template;
       placeholder.map((string)=>{
         template = template.replace(`__${string}__`,data[string]||'');
@@ -41,11 +53,24 @@
     },
     renderEdit(data){
       if(data.title){$(this.el).css("display","flex");}
-      let placeholder = ['title','singer','url'];
+      let placeholder = ['title','singer','url','album'];
       let template = this.template;
       placeholder.map((string)=>{
         template = template.replace(`__${string}__`, data[string] ||'');
       })
+      console.log('1')
+      if(data.isHQ){
+        switch (data.isHQ){
+          case '1':
+            template = template.replace('__checked1__','checked');
+            break;
+          case '0':
+            template = template.replace('__checked0__','checked');
+            break;
+          default:
+            return;
+        }
+      }
       template = template.replace(`__status__`,'编辑歌曲');
       $(this.el).html(template);
     },
@@ -62,24 +87,28 @@
     }
   };
   let model = {
-    data:{id:'',title:'',singer:'',url:''},
+    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:''},
     create(data){
       let Song = AV.Object.extend('Song');
       let song = new Song();
       song.set('title',data.title);
       song.set('singer',data.singer);
+      song.set('album',data.album);
       song.set('url',data.url);
+      song.set('isHQ',data.isHQ);
       return song.save();
     },
     update(data){
       let song = AV.Object.createWithoutData('Song',data.id);
       song.set('title',data.title);
       song.set('singer',data.singer);
+      song.set('album',data.album);
       song.set('url',data.url);
+      song.set('isHQ',data.isHQ);
       return song.save();
     },
     reset(){
-      this.data = {id:'',title:'',singer:'',url:''}
+      this.data = {id:'',title:'',singer:'',url:'',isHQ:''}
     }
   };
   let controller = {
@@ -108,13 +137,23 @@
     },
     bindEvent(){
       $(this.view.el).on('submit','form',(q)=>{
+        let daF = document.querySelector('.form');
+        let da = new FormData(daF);
+        for (var key of da){
+          if(key[0]==="isHQ"){
+            if(key[1]==="1"){
+              this.model.data["isHQ"]="1";
+            }else{
+              this.model.data["isHQ"]="0";
+            }
+          }
+        }
         q.preventDefault();
-        let details = ['title','singer','url']
+        let details = ['title','singer','url','album']
         details.map((item)=>{
-          let i = q.currentTarget.querySelector(`.form > .formRow > input[id=${item}]`);
+          let i = q.currentTarget.querySelector(`.form > .formRow > input[name=${item}]`);
           let savVal = i.value;
           this.model.data[item] = savVal;
-          console.log(this.model.data);
           //song.set(item,savVal);
         });
         if(this.model.data.id){

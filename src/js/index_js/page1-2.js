@@ -5,7 +5,7 @@
     <li>
       <div class="song-wrapper">
         <h4>__title__</h4>
-        <h6>__singer__-只要有相见的人，就不是孤身一人</h6>
+        <h6>__singer__ - __album__</h6>
       </div>
       <div class="play">
         <svg class="icon" aria-hidden="true">
@@ -15,26 +15,23 @@
     </li>
     `,
     render(data){//data is an array
-      console.log(data);
       let el = $(this.el);
-
       data.map((data)=>{
         let title=data.title;
         let singer=data.singer;
-        let dataObj = {title:title,singer:singer}
+        let album = data.album;
+        let dataObj = {title:title,singer:singer,album:album}
         let template = this.template;
-        console.log(dataObj.title);
         template = template.replace('__title__',dataObj.title||'');
         template = template.replace('__singer__',dataObj['singer']||'');
-        console.log(template);
+        template = template.replace('__singer__',dataObj['album']||'');
         $(el).prepend(template);
       })
-      
     },
 
   }
   let model={
-    data:{id:'',title:'',singer:'',url:''},
+    data:{id:'',title:'',singer:'',url:'',album:'',isHQ:''},
     db_data:[],
     findAll(){
       let query = new AV.Query('Song');
@@ -45,6 +42,8 @@
           item.id = i.id;
           item.title = i.attributes["title"];
           item.singer = i.attributes["singer"];
+          item.album = i.attributes["album"];
+          item.isHQ = i.attributes["isHQ"];
           item.url = i.attributes["url"];
           return songItem.push(item);
         })
