@@ -5,7 +5,7 @@
     <li>
       <div class="song-wrapper">
         <h4>__title__</h4>
-        <h6>__singer__ - __album__</h6>
+        <h6 isHQ="__val__">__singer__ - __album__</h6>
       </div>
       <div class="play">
         <svg class="icon" aria-hidden="true">
@@ -24,7 +24,12 @@
         let template = this.template;
         template = template.replace('__title__',dataObj.title||'');
         template = template.replace('__singer__',dataObj['singer']||'');
-        template = template.replace('__singer__',dataObj['album']||'');
+        template = template.replace('__album__',dataObj['album']||'');
+        if(data.isHQ==="1"){
+          template = template.replace('<h6 isHQ="__val__">',"<h6 isHQ='HQ' class='active'>")
+        }else{
+          template = template.replace(' isHQ="__val__"','')
+        }
         $(el).prepend(template);
       })
     },

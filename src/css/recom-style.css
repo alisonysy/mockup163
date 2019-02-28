@@ -206,11 +206,21 @@ h2.recom::before{
 
 .song-wrapper > h6{
   font-size: 0.8rem;
+  display: -webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.song-wrapper > h6::before{
-  content:''; /* data- attribute */
+.song-wrapper > h6.active::before{
+  content:attr(isHQ); /* data- attribute */
+  font-size: 0.6rem;
   display: inline-block;
+  color:#c6b1f0;
+  border:1px solid #c6b1f0;
+  border-radius: 2px;
+  padding: 1px 2px;
+  margin-right: 2px;
 }
 
 /* page2 - Popular song list */
