@@ -1,5 +1,19 @@
 {
-  let view={};
+  let view={
+    el:'.playing',
+    template:`
+    <audio controls src="__url__">
+      <p>呀呀呀，看来小可爱你的浏览器不支持这个音频格式哇</p>
+    </audio>
+    `,
+    renderPlaying(data){
+      console.log('1')
+      let template = this.template;
+      console.log(data)
+      template = template.replace('__url__',data.url);
+      $(this.el).append(template);
+    }
+  };
   let model={
     data:{id:'',title:'',singer:'',url:'',album:'',isHQ:''},
     fetchSong(){
@@ -16,7 +30,10 @@
       this.view = view;
       this.model = model;
       this.fetchId();
-      this.model.fetchSong().then((res)=>{console.log(this.model.data)});
+      this.model.fetchSong().then((res)=>{
+        console.log(this.model.data);
+        this.view.renderPlaying(this.model.data)
+      });
     },
     fetchId(){
       let winSearch = window.location.search;
