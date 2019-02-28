@@ -17,16 +17,19 @@
     render(data){//data is an array
       console.log(data);
       let el = $(this.el);
-      let template = this.template;
+
       data.map((data)=>{
         let title=data.title;
         let singer=data.singer;
         let dataObj = {title:title,singer:singer}
+        let template = this.template;
         console.log(dataObj.title);
         template = template.replace('__title__',dataObj.title||'');
         template = template.replace('__singer__',dataObj['singer']||'');
+        console.log(template);
+        $(el).prepend(template);
       })
-      $(el).append(template);
+      
     },
 
   }
