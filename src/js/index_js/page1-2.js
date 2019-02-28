@@ -3,6 +3,7 @@
     el:'section.page1 > .newSong > ul',
     template:`
     <li>
+    <a href="./playSong.html?id=__id__">
       <div class="song-wrapper">
         <h4>__title__</h4>
         <h6 isHQ="__val__">__singer__ - __album__</h6>
@@ -12,19 +13,17 @@
             <use xlink:href="#icon-play"></use>
         </svg>
       </div>
+    </a>
     </li>
     `,
     render(data){//data is an array
       let el = $(this.el);
       data.map((data)=>{
-        let title=data.title;
-        let singer=data.singer;
-        let album = data.album;
-        let dataObj = {title:title,singer:singer,album:album}
         let template = this.template;
-        template = template.replace('__title__',dataObj.title||'');
-        template = template.replace('__singer__',dataObj['singer']||'');
-        template = template.replace('__album__',dataObj['album']||'');
+        template = template.replace('__id__',data.id||'');
+        template = template.replace('__title__',data.title||'');
+        template = template.replace('__singer__',data['singer']||'');
+        template = template.replace('__album__',data['album']||'');
         if(data.isHQ==="1"){
           template = template.replace('<h6 isHQ="__val__">',"<h6 isHQ='HQ' class='active'>")
         }else{

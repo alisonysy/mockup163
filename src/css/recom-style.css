@@ -166,7 +166,6 @@ h2.recom::before{
 
 .newSong > ul >li{
   padding:0.5rem;
-  display: flex;
   width:100%;
   height: 4rem;
   position: relative;
@@ -180,6 +179,12 @@ h2.recom::before{
   top: 4rem;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.newSong > ul >li > a{
+  width:100%;
+  height: auto;
+  display: flex;
 }
 
 .song-wrapper{
