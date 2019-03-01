@@ -6,12 +6,30 @@
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   <meta name="viewport"
     content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="./css/playSongCSS.css">
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
-  <section class="playing">
-    
-  </section>
+  <div class="playing">
+    <section class="rotateImg">
+      <img src="./img/pointer.png" alt="pointer" class="pointer">
+      <div class="cover-wrapper">
+        <div class="disc-wrapper">
+          <div class="cover"></div>
+          <img src="./img/dist.png" alt="disc" class="disc">
+          <img src="./img/dist-light.png" alt="discLight" class="discLight">
+        </div>
+      </div>
+    </section>
+    <section class="progress">
+
+    </section>
+    <section class="info">
+
+    </section>
+    <section class="lyrics"></section>
+    <section class="controls"></section>
+  </div>
   <script src="../node_modules/leancloud-storage/dist/av-min.js"></script>
   <script src="./js/init/av.js"></script>
   <script src="../node_modules/qiniu-js/dist/qiniu.min.js"></script>

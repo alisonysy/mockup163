@@ -7,15 +7,23 @@
     </audio>
     `,
     renderPlaying(data){
-      console.log('1')
       let template = this.template;
-      console.log(data)
+      //template = template.replace('__cover__',data.cover);
       template = template.replace('__url__',data.url);
       $(this.el).append(template);
+    },
+    renderCover(data){
+      let cover = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .cover')[0]
+      $(cover).css({
+        'background-repeat':' no-repeat',
+        'background-position':' center',
+        'background-size': 'cover',
+        'background-image':`url('${data.cover}')`
+      })
     }
   };
   let model={
-    data:{id:'',title:'',singer:'',url:'',album:'',isHQ:''},
+    data:{id:'',title:'',singer:'',url:'',album:'',isHQ:'',cover:''},
     fetchSong(){
       let query = new AV.Query('Song');
       return query.get(this.data.id).then((res)=>{
@@ -32,7 +40,8 @@
       this.fetchId();
       this.model.fetchSong().then((res)=>{
         console.log(this.model.data);
-        this.view.renderPlaying(this.model.data)
+        this.view.renderPlaying(this.model.data);
+        this.view.renderCover(this.model.data);
       });
     },
     fetchId(){
