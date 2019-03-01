@@ -1,8 +1,13 @@
 {
   let view={
     el:'.playing',
+    title:'.playing > .rotateImg > .cover-wrapper > .disc-wrapper > .progress > .title-wrapper',
     renderPlaying(data){
       let audio = $(this.el).find('audio')[0];
+      let title = $(this.title).find('h2')[0];
+      let singer = $(this.title).find('h4')[0];
+      $(title).text(data.title);
+      $(singer).text(data.singer);
       audio.autoplay = false;
       if($(audio).attr('src')!==data.url){
         $(audio).attr('src',data.url);
@@ -13,12 +18,26 @@
     },
     renderCover(data){
       let cover = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .cover')[0]
-      $(cover).css({
-        'background-repeat':' no-repeat',
-        'background-position':' center',
-        'background-size': 'cover',
-        'background-image':`url('${data.cover}')`
-      })
+      if(cover){
+        $(cover).css({
+          'background-repeat':' no-repeat',
+          'background-position':' center',
+          'background-size': 'cover',
+          'background-image':`url('${data.cover}')`
+        })
+      }
+    },
+    rotateCover(){
+      let cover = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .cover')[0];
+      let disc = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .disc')[0];
+      $(cover).addClass('active');
+      $(disc).addClass('active')
+    },
+    stopRotateCover(){
+      let cover = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .cover')[0];
+      let disc = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .disc')[0];
+      $(cover).removeClass('active');
+      $(disc).removeClass('active')
     },
     renderProgress(songState){
       let progress = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .progress > .progress-wrapper')[0]
@@ -55,6 +74,7 @@
     },
     bindEvent(){
       let audio = $(this.view.el).find('audio')[0];
+      let bar = $(this.view.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .progress > .progress-wrapper')[0];
       window.eventHub.on('songReady',(data)=>{
         this.model.songState.durationInSec = audio.duration;
         let min = Math.floor(audio.duration/60).toString();
@@ -69,18 +89,18 @@
         this.view.renderProgress(this.model.songState)
       });
       audio.addEventListener('timeupdate',()=>{
-        let min = Math.floor(audio.currentTime/60).toString();
-        let seconds = Math.round(audio.currentTime%60);
-        let currentTime;
-        if(seconds<10){
-          currentTime = min + ':0' + seconds;
-        }else{
-          currentTime = min + ':' + seconds;
-        }
-        this.model.songState.currentTime = currentTime;
-        this.model.songState.currentTimeInSec = audio.currentTime;  
-        this.view.renderProgress(this.model.songState);
+        this.updateTime();
+      });
+      audio.addEventListener('play',()=>{
+        this.view.rotateCover();
+      });
+      audio.addEventListener('pause',()=>{
+        this.view.stopRotateCover();
       })
+      audio.addEventListener('ended',()=>{
+        this.view.stopRotateCover();
+      })
+      this.setTime();
     },
     fetchId(){
       let winSearch = window.location.search;
@@ -94,10 +114,28 @@
       let id = {id:winSearch};
       Object.assign(this.model.data,id);
     },
-    progress(){
-      let playback = $(this.view.el).find('audio')[0];
-
-
+    updateTime(){
+      let audio = $(this.view.el).find('audio')[0];
+      let min = Math.floor(audio.currentTime/60).toString();
+      let seconds = Math.round(audio.currentTime%60);
+      let currentTime;
+      if(seconds<10){
+        currentTime = min + ':0' + seconds;
+      }else{
+        currentTime = min + ':' + seconds;
+      }
+      this.model.songState.currentTime = currentTime;
+      this.model.songState.currentTimeInSec = audio.currentTime;  
+      this.view.renderProgress(this.model.songState);    
+    },
+    setTime(){
+      let audio = $(this.view.el).find('audio')[0];
+      let bar = $(this.view.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .progress > .progress-wrapper')[0];
+      let barLeft = bar.getBoundingClientRect().left;
+      bar.addEventListener('click',function(e){
+        let position = (e.pageX-barLeft)/this.offsetWidth;
+        audio.currentTime=position*audio.duration;
+      })
     }
   }
   controller.init(view,model);
