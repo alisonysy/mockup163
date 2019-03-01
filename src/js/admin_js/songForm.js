@@ -21,6 +21,10 @@
         <input type="text" id="url" name="url" value="__url__" required>
       </div>
       <div class="formRow">
+        <label for="cover">封面图</label>
+        <input type="text" id="cover" name="cover" value="__cover__">
+      </div>
+      <div class="formRow">
         <label for="HQ1">高音质</label>
         <input type="radio" id="HQ1" name="isHQ" value="1" __checked1__>
       </div>
@@ -39,7 +43,7 @@
     `,
     renderNew(data){ //data === {url:___,title:___}
       if(data.title){$(this.el).css("display","flex");}
-      let placeholder = ['title','singer','url','album'];
+      let placeholder = ['title','singer','url','album','cover'];
       let template = this.template;
       placeholder.map((string)=>{
         template = template.replace(`__${string}__`,data[string]||'');
@@ -53,12 +57,11 @@
     },
     renderEdit(data){
       if(data.title){$(this.el).css("display","flex");}
-      let placeholder = ['title','singer','url','album'];
+      let placeholder = ['title','singer','url','album','cover'];
       let template = this.template;
       placeholder.map((string)=>{
         template = template.replace(`__${string}__`, data[string] ||'');
       })
-      console.log('1')
       if(data.isHQ){
         switch (data.isHQ){
           case '1':
@@ -87,7 +90,7 @@
     }
   };
   let model = {
-    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:''},
+    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:'',cover:''},
     create(data){
       let Song = AV.Object.extend('Song');
       let song = new Song();
@@ -96,6 +99,7 @@
       song.set('album',data.album);
       song.set('url',data.url);
       song.set('isHQ',data.isHQ);
+      song.set('cover',data.cover);
       return song.save();
     },
     update(data){
@@ -105,10 +109,11 @@
       song.set('album',data.album);
       song.set('url',data.url);
       song.set('isHQ',data.isHQ);
+      song.set('cover',data.cover);
       return song.save();
     },
     reset(){
-      this.data = {id:'',title:'',singer:'',url:'',isHQ:''}
+      this.data = {id:'',title:'',singer:'',url:'',isHQ:'',cover:''}
     }
   };
   let controller = {
@@ -149,7 +154,7 @@
           }
         }
         q.preventDefault();
-        let details = ['title','singer','url','album']
+        let details = ['title','singer','url','album','cover']
         details.map((item)=>{
           let i = q.currentTarget.querySelector(`.form > .formRow > input[name=${item}]`);
           let savVal = i.value;

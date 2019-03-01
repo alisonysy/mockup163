@@ -17,6 +17,9 @@
           <tr>
             <td>URL</td><td>__url__</td>
           </tr>
+          <tr>
+            <td>封面</td><td>__cover__</td>
+          </tr>
         </tbody>
       </table>
       <div class="buttons">
@@ -63,7 +66,7 @@
           //child.className = "info-wrapper";
           el.after(child);
           let template = this.infoTemplate
-          let placeholder = ['title','singer','url','album'];
+          let placeholder = ['title','singer','url','album','cover'];
           placeholder.map((i)=>{
             template = template.replace(`__${i}__`,data[i] || '')
           });
@@ -85,7 +88,7 @@
     }
   };
   let model={
-    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:''},
+    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:'',cover:''},
     db_data:[],//array[{id,url,singer,title},{id,url,singer,title}...]
     findAll(){
       let query = new AV.Query('Song');
@@ -98,6 +101,7 @@
           item.singer = i.attributes["singer"];
           item.album = i.attributes["album"];
           item.url = i.attributes["url"];
+          item.cover = i.attributes["cover"];
           item.isHQ = i.attributes["isHQ"];
           return songItem.push(item);
         })
@@ -124,7 +128,7 @@
       },(err)=>{console.error(err)})
     },
     reset(){
-      this.data = {id:'',title:'',singer:'',album:'',url:'',isHQ:''};
+      this.data = {id:'',title:'',singer:'',album:'',url:'',isHQ:'',cover:''};
     }
   };
   let controller ={
