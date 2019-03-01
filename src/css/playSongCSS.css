@@ -118,8 +118,66 @@ body{
   }
 }
 
-
 .discLight{
   position: absolute;
   width: 100%;
+}
+
+/* SECTION 2 - progress bar embedded in .disc-wrapper */
+.progress{
+  width:100%;
+  padding-top: 100%;
+  position: absolute;
+}
+
+.progress-wrapper{
+  height: 0.4rem;
+  width: 100%;
+  background: #c6b1f0;
+  position: absolute;
+  top:110%;
+  border-radius: 5px;
+}
+
+.progress-wrapper::before{
+  content:attr(data-start); 
+  position: absolute;
+  color:#c6b1f0;
+  top:200%;
+  left:-5%;
+}
+
+.progress-wrapper::after{
+  content: attr(data-end);
+  position: absolute;
+  color:#c6b1f0;
+  top:200%;
+  right:-5%;
+}
+
+.bar{
+  position: absolute;
+  height: 100%;
+  background:#fff;
+  border-radius: 10px;
+}
+
+.bar::before{
+  content: '';
+  position: absolute;
+  height: 1.1rem;
+  width: 1.1rem;
+  background: white;
+  border-radius: 50%;
+  top: -51%;
+  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.65);
+  left: 100%;
+}
+
+
+
+/* controls test */
+audio{
+  position: absolute;
+  bottom: 0;
 }

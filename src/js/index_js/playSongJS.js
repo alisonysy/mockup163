@@ -1,15 +1,15 @@
 {
   let view={
     el:'.playing',
-    template:`
-
-    `,
     renderPlaying(data){
       let audio = $(this.el).find('audio')[0];
       audio.autoplay = false;
       if($(audio).attr('src')!==data.url){
         $(audio).attr('src',data.url);
       }
+      audio.addEventListener('canplaythrough',()=>{
+        window.eventHub.emit('songReady',data);
+      })
     },
     renderCover(data){
       let cover = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .cover')[0]
@@ -19,10 +19,19 @@
         'background-size': 'cover',
         'background-image':`url('${data.cover}')`
       })
+    },
+    renderProgress(songState){
+      let progress = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .progress > .progress-wrapper')[0]
+      let bar = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .progress > .progress-wrapper > .bar')[0]
+      $(progress).attr('data-start',songState.currentTime);
+      $(progress).attr('data-end',songState.duration);
+      let percent = (songState.currentTimeInSec/songState.durationInSec)*100;
+      $(bar).css('width',`${percent}%`);
     }
   };
   let model={
     data:{id:'',title:'',singer:'',url:'',album:'',isHQ:'',cover:''},
+    songState:{duration:'',currentTime:'',durationInSec:'',currentTimeInSec:''},
     fetchSong(){
       let query = new AV.Query('Song');
       return query.get(this.data.id).then((res)=>{
@@ -41,16 +50,36 @@
         console.log(this.model.data);
         this.view.renderPlaying(this.model.data);
         this.view.renderCover(this.model.data);
-        window.eventHub.emit('songReady',this.model.data);
       });
+      this.bindEvent();
+    },
+    bindEvent(){
+      let audio = $(this.view.el).find('audio')[0];
       window.eventHub.on('songReady',(data)=>{
-        let audio = $(this.view.el).find('audio')[0];
-        let button = document.getElementById('audio');
-        button.onclick=function(){
-          audio.play();
+        this.model.songState.durationInSec = audio.duration;
+        let min = Math.floor(audio.duration/60).toString();
+        let seconds = Math.round(audio.duration%60);
+        let duration;
+        if(seconds<10){
+          duration = min + ':0' + seconds;
+        }else{
+          duration = min + ':' + seconds;
         }
-        console.log('1')
-        //this.progress();
+        this.model.songState.duration = duration;
+        this.view.renderProgress(this.model.songState)
+      });
+      audio.addEventListener('timeupdate',()=>{
+        let min = Math.floor(audio.currentTime/60).toString();
+        let seconds = Math.round(audio.currentTime%60);
+        let currentTime;
+        if(seconds<10){
+          currentTime = min + ':0' + seconds;
+        }else{
+          currentTime = min + ':' + seconds;
+        }
+        this.model.songState.currentTime = currentTime;
+        this.model.songState.currentTimeInSec = audio.currentTime;  
+        this.view.renderProgress(this.model.songState);
       })
     },
     fetchId(){
@@ -67,12 +96,7 @@
     },
     progress(){
       let playback = $(this.view.el).find('audio')[0];
-      playback.play().then((res)=>{
-        console.log(res)
-      }).catch((err)=>{console.log(err)})
-      console.log('2')
-      let length = playback.duration;
-      console.log(length);
+
 
     }
   }
