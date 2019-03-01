@@ -2,15 +2,14 @@
   let view={
     el:'.playing',
     template:`
-    <audio controls src="__url__">
-      <p>呀呀呀，看来小可爱你的浏览器不支持这个音频格式哇</p>
-    </audio>
+
     `,
     renderPlaying(data){
-      let template = this.template;
-      //template = template.replace('__cover__',data.cover);
-      template = template.replace('__url__',data.url);
-      $(this.el).append(template);
+      let audio = $(this.el).find('audio')[0];
+      audio.autoplay = false;
+      if($(audio).attr('src')!==data.url){
+        $(audio).attr('src',data.url);
+      }
     },
     renderCover(data){
       let cover = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .cover')[0]
@@ -42,7 +41,17 @@
         console.log(this.model.data);
         this.view.renderPlaying(this.model.data);
         this.view.renderCover(this.model.data);
+        window.eventHub.emit('songReady',this.model.data);
       });
+      window.eventHub.on('songReady',(data)=>{
+        let audio = $(this.view.el).find('audio')[0];
+        let button = document.getElementById('audio');
+        button.onclick=function(){
+          audio.play();
+        }
+        console.log('1')
+        //this.progress();
+      })
     },
     fetchId(){
       let winSearch = window.location.search;
@@ -55,6 +64,16 @@
       }
       let id = {id:winSearch};
       Object.assign(this.model.data,id);
+    },
+    progress(){
+      let playback = $(this.view.el).find('audio')[0];
+      playback.play().then((res)=>{
+        console.log(res)
+      }).catch((err)=>{console.log(err)})
+      console.log('2')
+      let length = playback.duration;
+      console.log(length);
+
     }
   }
   controller.init(view,model);
