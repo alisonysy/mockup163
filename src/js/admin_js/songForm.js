@@ -32,6 +32,10 @@
         <label for="HQ0">标准音质</label>
         <input type="radio" id="HQ0" name="isHQ" value="0" __checked0__>
       </div>
+      <div class="formRow">
+        <label for="lyrics">歌词</label>
+        <textarea name="lyrics" rows="5" cols="40" style="resize:none">__lyrics__</textarea>
+      </div>
       <input type="submit" value="保存">
       <button type="button" id="cancel">取消</button>
     </form>
@@ -43,7 +47,7 @@
     `,
     renderNew(data){ //data === {url:___,title:___}
       if(data.title){$(this.el).css("display","flex");}
-      let placeholder = ['title','singer','url','album','cover'];
+      let placeholder = ['title','singer','url','album','cover','lyrics'];
       let template = this.template;
       placeholder.map((string)=>{
         template = template.replace(`__${string}__`,data[string]||'');
@@ -57,7 +61,8 @@
     },
     renderEdit(data){
       if(data.title){$(this.el).css("display","flex");}
-      let placeholder = ['title','singer','url','album','cover'];
+      console.log(data)
+      let placeholder = ['title','singer','url','album','cover','lyrics'];
       let template = this.template;
       placeholder.map((string)=>{
         template = template.replace(`__${string}__`, data[string] ||'');
@@ -90,7 +95,7 @@
     }
   };
   let model = {
-    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:'',cover:''},
+    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:'',cover:'',lyrics:''},
     create(data){
       let Song = AV.Object.extend('Song');
       let song = new Song();
@@ -100,6 +105,7 @@
       song.set('url',data.url);
       song.set('isHQ',data.isHQ);
       song.set('cover',data.cover);
+      song.set('lyrics',data.lyrics);
       return song.save();
     },
     update(data){
@@ -110,10 +116,11 @@
       song.set('url',data.url);
       song.set('isHQ',data.isHQ);
       song.set('cover',data.cover);
+      song.set('lyrics',data.lyrics);
       return song.save();
     },
     reset(){
-      this.data = {id:'',title:'',singer:'',url:'',isHQ:'',cover:''}
+      this.data = {id:'',title:'',singer:'',url:'',isHQ:'',cover:'',lyrics:''}
     }
   };
   let controller = {
@@ -161,6 +168,8 @@
           this.model.data[item] = savVal;
           //song.set(item,savVal);
         });
+        let lyrics = q.currentTarget.querySelector(`.form > .formRow > textarea[name=lyrics]`);
+        this.model.data.lyrics = lyrics.value;
         if(this.model.data.id){
           this.model.update(this.model.data)
             .then((res)=>{

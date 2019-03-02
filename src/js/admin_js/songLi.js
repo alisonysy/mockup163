@@ -88,7 +88,7 @@
     }
   };
   let model={
-    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:'',cover:''},
+    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:'',cover:'',lyrics:''},
     db_data:[],//array[{id,url,singer,title},{id,url,singer,title}...]
     findAll(){
       let query = new AV.Query('Song');
@@ -103,6 +103,7 @@
           item.url = i.attributes["url"];
           item.cover = i.attributes["cover"];
           item.isHQ = i.attributes["isHQ"];
+          item.lyrics = i.attributes["lyrics"];
           return songItem.push(item);
         })
         this.db_data = songItem;
@@ -128,7 +129,7 @@
       },(err)=>{console.error(err)})
     },
     reset(){
-      this.data = {id:'',title:'',singer:'',album:'',url:'',isHQ:'',cover:''};
+      this.data = {id:'',title:'',singer:'',album:'',url:'',isHQ:'',cover:'',lyrics:''};
     }
   };
   let controller ={
