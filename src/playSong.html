@@ -15,7 +15,8 @@
       <img src="./img/pointer.png" alt="pointer" class="pointer">
       <div class="cover-wrapper">
         <div class="disc-wrapper">
-          <div class="cover"></div>
+          <div class="cover">
+          </div>
           <img src="./img/dist.png" alt="disc" class="disc">
           <img src="./img/dist-light.png" alt="discLight" class="discLight">
           <section class="progress">
@@ -23,6 +24,12 @@
               <div class="bar"></div>
             </div>
             <div class="title-wrapper">
+                <svg class="icon" aria-hidden="true" id="pause">
+                  <use xlink:href="#icon-pause1"></use>
+                </svg>
+                <svg class="icon" aria-hidden="true" id="play">
+                  <use xlink:href="#icon-play-copy"></use>
+                </svg>
                 <h2></h2>
                 <h4></h4>
               </div>
@@ -32,7 +39,7 @@
     </section>
 
     <section class="lyrics"></section>
-    <section class="controls"></section>
+    <section id="test"></section>
     <audio src="#" preload="metadata" controls>
         <p>呀呀呀，看来小可爱你的浏览器不支持这个音频格式哇</p>
     </audio>
@@ -41,6 +48,7 @@
   <script src="./js/init/av.js"></script>
   <script src="../node_modules/qiniu-js/dist/qiniu.min.js"></script>
   <script src="../node_modules/plupload/js/plupload.min.js"></script>
+  <script src="//at.alicdn.com/t/font_1061834_vwz4vw61o0m.js"></script>
   <script src="./js/index_js/eventHub_index.js"></script>
   <script src="./js/index_js/playSongJS.js"></script>
 </body>

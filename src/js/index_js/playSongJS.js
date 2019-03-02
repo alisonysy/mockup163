@@ -1,11 +1,16 @@
 {
   let view={
     el:'.playing',
+    discWrap:'.playing > .rotateImg > .cover-wrapper > .disc-wrapper',
     title:'.playing > .rotateImg > .cover-wrapper > .disc-wrapper > .progress > .title-wrapper',
+    cover:'.playing > .rotateImg > .cover-wrapper > .disc-wrapper > .cover',
+    disc:'.playing > .rotateImg > .cover-wrapper > .disc-wrapper > .disc',
     renderPlaying(data){
       let audio = $(this.el).find('audio')[0];
       let title = $(this.title).find('h2')[0];
       let singer = $(this.title).find('h4')[0];
+      let playButton = $(this.title).find('#play');
+      $(playButton).addClass('onplay');
       $(title).text(data.title);
       $(singer).text(data.singer);
       audio.autoplay = false;
@@ -28,16 +33,25 @@
       }
     },
     rotateCover(){
-      let cover = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .cover')[0];
-      let disc = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .disc')[0];
+      let cover = $(this.cover);
+      let disc = $(this.disc);
+      let pauseButton= $(this.title).find('#pause');
+      console.log(pauseButton)
+      let playButton = $(this.title).find('#play');
       $(cover).addClass('active');
-      $(disc).addClass('active')
+      $(disc).addClass('active');
+      $(pauseButton).addClass('onplay');
+      $(playButton).removeClass('onplay');
     },
     stopRotateCover(){
       let cover = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .cover')[0];
       let disc = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .disc')[0];
+      let playButton = $(this.title).find('#play');
+      let pauseButton= $(this.title).find('#pause');
       $(cover).removeClass('active');
-      $(disc).removeClass('active')
+      $(disc).removeClass('active');
+      $(playButton).addClass('onplay');
+      $(pauseButton).removeClass('onplay');
     },
     renderProgress(songState){
       let progress = $(this.el).find('.rotateImg > .cover-wrapper > .disc-wrapper > .progress > .progress-wrapper')[0]
@@ -50,7 +64,7 @@
   };
   let model={
     data:{id:'',title:'',singer:'',url:'',album:'',isHQ:'',cover:''},
-    songState:{duration:'',currentTime:'',durationInSec:'',currentTimeInSec:''},
+    songState:{duration:'',currentTime:'',durationInSec:'',currentTimeInSec:'',state:''},
     fetchSong(){
       let query = new AV.Query('Song');
       return query.get(this.data.id).then((res)=>{
@@ -70,7 +84,9 @@
         this.view.renderPlaying(this.model.data);
         this.view.renderCover(this.model.data);
       });
+      this.getHeight();
       this.bindEvent();
+
     },
     bindEvent(){
       let audio = $(this.view.el).find('audio')[0];
@@ -101,6 +117,7 @@
         this.view.stopRotateCover();
       })
       this.setTime();
+      this.stopAndPlay();
     },
     fetchId(){
       let winSearch = window.location.search;
@@ -136,6 +153,34 @@
         let position = (e.pageX-barLeft)/this.offsetWidth;
         audio.currentTime=position*audio.duration;
       })
+    },
+    stopAndPlay(){
+      let playButton = $(this.view.title).find('#play')[0];
+      let audio = $(this.view.el).find('audio')[0];
+      let pauseButton = $(this.view.title).find('#pause')[0];
+      console.log(pauseButton)
+      pauseButton.addEventListener('click',function(){
+        console.log(pauseButton)
+        console.log('clicked')
+        audio.pause()
+        console.log('pauseButton')
+      })
+      playButton.addEventListener('click',function(){
+        audio.play()
+      })
+    },
+    getHeight(){
+      let box = $(this.view.el).find('#test')[0];
+      let singer_h4 = $(this.view.title).find('h4')[0];
+      let boxH = box.getBoundingClientRect().top;
+      let singer_h4H = singer_h4.getBoundingClientRect().bottom;
+      let distance = boxH-singer_h4H;
+      let lyricsBox = $(this.view.el).find('.lyrics');
+      if(distance>100){
+        $(lyricsBox).css('height','23%')
+      }else{
+        $(lyricsBox).css('height','13%')
+      }
     }
   }
   controller.init(view,model);
