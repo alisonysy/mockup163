@@ -80,7 +80,6 @@
       this.model = model;
       this.fetchId();
       this.model.fetchSong().then((res)=>{
-        console.log(this.model.data);
         this.view.renderPlaying(this.model.data);
         this.view.renderCover(this.model.data);
       });
@@ -180,6 +179,7 @@
         $(lyricsBox).css('height','23%')
       }else{
         $(lyricsBox).css('height','13%')
+        let h = lyricsBox[0].getBoundingClientRect().height;
       }
     }
   }

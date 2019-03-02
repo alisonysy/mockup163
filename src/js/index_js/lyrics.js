@@ -10,22 +10,14 @@
           rollingP.push(entry);
         }
       }
-      console.log(rollingP);
       rollingP.map((i)=>{
         let curTime = i.dataset.time;
         let nextTime = i.nextElementSibling.dataset.time;
         let curHeight = i.offsetTop;
-        console.log(i)
-        console.log(curHeight);
-        if(nextTime){
-        //console.log(curTime+" "+nextTime);
-        console.log('enter')
-          if(curTime<= songState.currentTimeInSec && nextTime > songState.currentTimeInSec){
-            $(p).css('transform',`translateY(${-curHeight+50}px)`);
-            console.log('done')
-          }
+        if(curTime<= songState.currentTimeInSec && nextTime > songState.currentTimeInSec){
+          $(p).css('transform',`translateY(${-curHeight+30}px)`);
+          $(i).css('color','#fff').siblings().css('color','#c6b1f085');
         }
-        //if()
       })
     }
   };
@@ -67,7 +59,6 @@
       this.model = model;
       this.fetchId();
       this.model.fetchSong().then((res)=>{
-        console.log(this.model.data.lyrics);
         this.model.processLyrics(this.model.data,this.view);
       })
       this.bindEvent();
@@ -86,12 +77,11 @@
     },
     bindEvent(){
       let audio = $(this.view.audio)[0];
-      audio.addEventListener('play',()=>{
-        this.view.renderLyrics(this.model.songState);
-      });
       audio.addEventListener('timeupdate',()=>{
         this.model.songState.currentTimeInSec = audio.currentTime;
-        console.log(this.model.songState.currentTimeInSec);
+        console.log('update');
+        this.view.renderLyrics(this.model.songState);
+
       });
     }
   }
