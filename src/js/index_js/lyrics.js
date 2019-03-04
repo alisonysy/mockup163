@@ -12,7 +12,10 @@
       }
       rollingP.map((i)=>{
         let curTime = i.dataset.time;
-        let nextTime = i.nextElementSibling.dataset.time || '';
+        let nextTime;
+        if(i.nextElementSibling){
+          nextTime = i.nextElementSibling.dataset.time;
+        }
         let curHeight = i.offsetTop;
         if(curTime<= songState.currentTimeInSec && nextTime > songState.currentTimeInSec){
           $(p).css('transform',`translateY(${-curHeight+30}px)`);
