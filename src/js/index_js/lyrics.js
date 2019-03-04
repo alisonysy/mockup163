@@ -12,7 +12,7 @@
       }
       rollingP.map((i)=>{
         let curTime = i.dataset.time;
-        let nextTime = i.nextElementSibling.dataset.time;
+        let nextTime = i.nextElementSibling.dataset.time || '';
         let curHeight = i.offsetTop;
         if(curTime<= songState.currentTimeInSec && nextTime > songState.currentTimeInSec){
           $(p).css('transform',`translateY(${-curHeight+30}px)`);
@@ -79,7 +79,6 @@
       let audio = $(this.view.audio)[0];
       audio.addEventListener('timeupdate',()=>{
         this.model.songState.currentTimeInSec = audio.currentTime;
-        console.log('update');
         this.view.renderLyrics(this.model.songState);
 
       });

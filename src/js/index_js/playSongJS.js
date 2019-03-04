@@ -36,7 +36,6 @@
       let cover = $(this.cover);
       let disc = $(this.disc);
       let pauseButton= $(this.title).find('#pause');
-      console.log(pauseButton)
       let playButton = $(this.title).find('#play');
       $(cover).addClass('active');
       $(disc).addClass('active');
@@ -157,12 +156,8 @@
       let playButton = $(this.view.title).find('#play')[0];
       let audio = $(this.view.el).find('audio')[0];
       let pauseButton = $(this.view.title).find('#pause')[0];
-      console.log(pauseButton)
       pauseButton.addEventListener('click',function(){
-        console.log(pauseButton)
-        console.log('clicked')
         audio.pause()
-        console.log('pauseButton')
       })
       playButton.addEventListener('click',function(){
         audio.play()
