@@ -3,8 +3,43 @@
   <head>
     <title>歌单管理页面</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="./css/admin_playlist.css">
   </head>
   <body>
-    
+    <aside>
+      <div class="playlist-title">已创建歌单</div>
+      <ul class="playlist"></ul>
+    </aside>
+    <main>
+      <form class="form">
+        <div class="status"></div>
+        <div class="formRow">
+          <label for="title">歌单名</label>
+          <input type="text" id="title" name="title" value="">
+        </div>
+        <div class="formRow">
+          <label for="cover">封面图</label>
+          <input type="text" id="cover" name="cover" value="">
+        </div>
+        <div class="formRow intro">
+          <label for="intro">简介</label>
+          <textarea name="intro" id="intro" cols="40" rows="10" style="resize:none"></textarea>
+        </div>
+        <div class="formRow chooseSong">
+          <label for="chooseSong">歌单歌曲</label>
+          <select name="" id="chooseSong" multiple size="8">
+              <option value="dog">Dog</option>
+              <option value="cat">Cat</option>
+              <option value="hamster">Hamster</option>
+              <option value="parrot">Parrot</option>
+              <option value="spider">Spider</option>
+              <option value="goldfish">Goldfish</option>
+          </select>
+        </div>
+        <input type="submit" value="保存">
+        <button type="button" id="cancel">取消</button>
+      </form>
+      <button class="toAdmin-song">管理歌曲</button>
+    </main>
   </body>
 </html>
