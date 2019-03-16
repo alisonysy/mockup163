@@ -218,13 +218,13 @@ main > .songDetail > .form > input[type=submit]{
   margin-top: 0.5rem;
 }
 
-main > .songDetail > .form > input[type=submit]:hover{
+input[type=submit]:hover{
   background: linear-gradient(to right,#04031d,#1c194c,#1c179e);
   box-shadow: 2px 0px 5px -1px rgba(0,0,0,0.5);
   transform: scale(1.1);
 }
 
-main > .songDetail > .form > button#cancel{
+button#cancel, .toPlaylist{
   padding: 0.2rem;
   background: #4925bf;
   border:none;
@@ -235,10 +235,15 @@ main > .songDetail > .form > button#cancel{
   margin-left: 0.5rem;
 }
 
-main > .songDetail > .form > button#cancel:hover{
+button#cancel:hover, .toPlaylist:hover{
   background: linear-gradient(to right,#04031d,#1c194c,#1c179e);
   box-shadow: 2px 0px 5px -1px rgba(0,0,0,0.5);
   transform: scale(1.1);
+}
+
+.toPlaylist-wrapper{
+  align-self: flex-end;
+  margin-right: 5%;
 }
 
 /* deletion notification */

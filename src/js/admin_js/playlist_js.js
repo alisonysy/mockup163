@@ -2,10 +2,6 @@
   let view = {
     el:'main',
     aside:'.playlist',
-    findli(){
-      this.li=$(this.aside).find('li');
-      return this.li;
-    },
     renderSongs(songData){
       let option = $(this.el).find('#chooseSong')[0];
       songData.map((song)=>{
@@ -35,7 +31,6 @@
           </li>`
           );
       });
-      window.eventHub.emit('renderedLi',this.findli())
     },
     renderNewPlaylist(data){
       let id=data.id;
@@ -51,6 +46,8 @@
       );
     },
     renderEdit(data){
+      let formName = $(this.el).find('.status')[0];
+      formName.textContent = '编辑歌单';
       let placeholders = ['title','cover','intro'];
       let form = $(this.el).find('form')[0];
       placeholders.map((name)=>{
@@ -58,7 +55,18 @@
         item.value=data[name];
       })
     },
+    renderUpdatedLi(data){
+      let li = $(this.aside).find('li');
+      for(let el of li){
+        if(el.dataset.id===data.id){
+          $(el).find('.playlistTitle')[0].textContent = data.title;
+          $(el).find('.playlistIntro')[0].textContent = data.intro;
+        }
+      }
+    },
     resetForm(){
+      let formName = $(this.el).find('.status')[0];
+      formName.textContent = '新建歌单';
       let placeholders = ['title','cover','intro'];
       let form = $(this.el).find('form')[0];
       let arr=[];
@@ -125,6 +133,14 @@
         window.eventHub.emit('fetchAllPlaylists',this.data);
       },(err)=>{console.error(err)})
     },
+    updatePlaylist(data){
+      let playlist = AV.Object.createWithoutData('Playlist',data.id);
+      let placeholders = ['title','cover','intro','songs'];
+      placeholders.map((i)=>{
+        playlist.set(i,data[i]);
+      });
+      return playlist.save();
+    },
     reset(){
       this.data = {title:'',cover:'',intro:'',songs:'',id:''}
     }
@@ -138,38 +154,58 @@
       this.bindEvent();
       window.eventHub.on('fetchAllPlaylists',(data)=>{
         this.view.renderPlaylistAside(data);
-        console.log(this.view.findli());
         this.model.reset();
       });
       window.eventHub.on('save',(data)=>{
         this.view.renderNewPlaylist(data);
         this.view.resetForm();
+        this.model.reset();
       });
       window.eventHub.on('fetchSongs',(data)=>{
         this.view.renderSongs(data);
       });
       window.eventHub.on('fetchPlaylist',(data)=>{
         this.view.renderEdit(data);
+      });
+      window.eventHub.on('edited',()=>{
+        this.view.renderUpdatedLi(this.model.data);
+        this.view.resetForm();
       })
+
     },
     bindEvent(){
       let form = $(this.view.el).find('form')[0];
       form.addEventListener('submit',(e)=>{
         e.preventDefault();
         let formEl = e.currentTarget;
-        this.getFormData(formEl);
-        this.model.createPlaylist(this.model.data)
+        if(this.model.data.id){
+          let id = this.model.data.id;
+          this.getFormData(formEl);
+          this.model.data.id = id;
+          this.model.updatePlaylist(this.model.data)
+            .then(()=>{
+              window.eventHub.emit('edited',this.model.data);
+            })
+            .catch((err)=>{console.log(err)})
+        }else{
+          this.getFormData(formEl);
+          this.model.createPlaylist(this.model.data)
           .then(()=>{
             window.eventHub.emit('save',this.model.data);
-            this.model.reset();
           })
           .catch((err)=>{console.log(err)});
+        }
       });
       $(this.view.aside).on('click','li',(e)=>{
         let li = e.currentTarget;
         this.model.data.id = li.dataset.id;
         this.model.fetchPlaylist(this.model.data.id);
-      })
+      });
+      $(this.view.el).find('#cancel').on('click',()=>{
+        this.view.resetForm();
+        this.model.reset();
+      });
+
     },
     getFormData(form){
       this.model.reset();
@@ -186,7 +222,6 @@
         songs = this.model.data.songs.trim().split(' ');
       }
       this.model.data.songs = songs;
-      console.log(this.model.data);
     }
   };
   controller.init(view, model);
