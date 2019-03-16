@@ -2,6 +2,10 @@
   let view = {
     el:'main',
     aside:'.playlist',
+    findli(){
+      this.li=$(this.aside).find('li');
+      return this.li;
+    },
     renderSongs(songData){
       let option = $(this.el).find('#chooseSong')[0];
       songData.map((song)=>{
@@ -14,7 +18,7 @@
           let album = song["album"];
           str = name + "  " + singer+ "  "+album;
         }
-        $(option).append(`<option value="${id}">${str}</option>`);
+        $(option).append(`<option value="${id}" class="">${str}</option>`);
       })
     },
     renderPlaylistAside(playlistArr){
@@ -30,7 +34,8 @@
           </div>
           </li>`
           );
-      })
+      });
+      window.eventHub.emit('renderedLi',this.findli())
     },
     renderNewPlaylist(data){
       let id=data.id;
@@ -44,6 +49,14 @@
         </div>
         </li>`
       );
+    },
+    renderEdit(data){
+      let placeholders = ['title','cover','intro'];
+      let form = $(this.el).find('form')[0];
+      placeholders.map((name)=>{
+        let item = $(form).find(`[name=${name}]`)[0];
+        item.value=data[name];
+      })
     },
     resetForm(){
       let placeholders = ['title','cover','intro'];
@@ -59,7 +72,7 @@
     }
   };
   let model = {
-    data:{title:'',cover:'',intro:'',songs:''},
+    data:{title:'',cover:'',intro:'',songs:'',id:''},
     songData:{id:'',title:'',singer:'',album:'',isHQ:''},
     fetchSongs(){
       let query = new AV.Query('Song');
@@ -75,7 +88,6 @@
           return songItem.push(item);
         })
         this.songData = songItem;
-        console.log(this.songData);
         window.eventHub.emit('fetchSongs',this.songData);
       },(err)=>{console.error(err)})
     },
@@ -87,6 +99,14 @@
         playlist.set(i,data[i]);
       });
       return playlist.save();
+    },
+    fetchPlaylist(id){
+      let query = new AV.Query('Playlist');
+      return query.get(id).then((res)=>{
+        this.data = res.attributes;
+        this.data.id = res.id;
+        window.eventHub.emit('fetchPlaylist',this.data);
+      },(err)=>{console.error(err)})
     },
     fetchAllPlaylists(){
       let query = new AV.Query('Playlist');
@@ -102,27 +122,23 @@
          playlistItem.push(item);
         })
         this.data = playlistItem;
-        console.log(this.data);
         window.eventHub.emit('fetchAllPlaylists',this.data);
       },(err)=>{console.error(err)})
     },
     reset(){
-      this.data = {title:'',cover:'',intro:'',songs:''}
+      this.data = {title:'',cover:'',intro:'',songs:'',id:''}
     }
   };
   let controller ={
     init(view, model){
       this.view = view;
       this.model = model;
-      this.model.fetchAllPlaylists()
-        .then(()=>{
-          let li = $(this.view.aside).find('li');
-          console.log(li);
-        });
+      this.model.fetchAllPlaylists();
       this.model.fetchSongs();
       this.bindEvent();
       window.eventHub.on('fetchAllPlaylists',(data)=>{
         this.view.renderPlaylistAside(data);
+        console.log(this.view.findli());
         this.model.reset();
       });
       window.eventHub.on('save',(data)=>{
@@ -132,6 +148,9 @@
       window.eventHub.on('fetchSongs',(data)=>{
         this.view.renderSongs(data);
       });
+      window.eventHub.on('fetchPlaylist',(data)=>{
+        this.view.renderEdit(data);
+      })
     },
     bindEvent(){
       let form = $(this.view.el).find('form')[0];
@@ -146,9 +165,10 @@
           })
           .catch((err)=>{console.log(err)});
       });
-      let aside = $(this.view.aside)[0];
-      aside.addEventListener('click',(e)=>{
-        console.log(e.currentTarget)
+      $(this.view.aside).on('click','li',(e)=>{
+        let li = e.currentTarget;
+        this.model.data.id = li.dataset.id;
+        this.model.fetchPlaylist(this.model.data.id);
       })
     },
     getFormData(form){
