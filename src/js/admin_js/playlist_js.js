@@ -2,12 +2,18 @@
   let view = {
     el:'main',
     renderSongs(songData){
+      let option = $(this.el).find('#chooseSong')[0];
       songData.map((song)=>{
+        let id="";
         let str="";
         for(let key in song){
-          str += key + ':' + song[key] + "  ";
+          id = song.id;
+          let name = song["title"];
+          let singer = song["singer"];
+          let album = song["album"];
+          str = name + "  " + singer+ "  "+album;
         }
-        console.log(str);
+        $(option).append(`<option value="${id}">${str}</option>`);
       })
     }
   };
@@ -35,17 +41,14 @@
     createPlaylist(data){
       let Playlist = AV.Object.extend('Playlist');
       let playlist = new Playlist();
-      song.set('title',data.title);
-      song.set('singer',data.singer);
-      song.set('album',data.album);
-      song.set('url',data.url);
-      song.set('isHQ',data.isHQ);
-      song.set('cover',data.cover);
-      song.set('lyrics',data.lyrics);
-      return song.save();
+      let placeholders = ['title','cover','intro','songs'];
+      placeholders.map((i)=>{
+        playlist.set(i,data[i]);
+      })
+      return playlist.save();
     },
     fetchPlaylist(){
-
+      
     },
     reset(){
       this.data = {title:'',cover:'',intro:'',songs:''}
@@ -67,6 +70,7 @@
         e.preventDefault();
         let formEl = e.currentTarget;
         this.getFormData(formEl);
+        this.model.createPlaylist(this.model.data);
       })
     },
     getFormData(form){
