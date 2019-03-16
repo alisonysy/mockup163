@@ -1,6 +1,7 @@
 {
   let view = {
     el:'main',
+    aside:'.playlist',
     renderSongs(songData){
       let option = $(this.el).find('#chooseSong')[0];
       songData.map((song)=>{
@@ -15,6 +16,34 @@
         }
         $(option).append(`<option value="${id}">${str}</option>`);
       })
+    },
+    renderPlaylistAside(playlistArr){
+      playlistArr.map((playlist)=>{
+        let id = playlist.id;
+        let title=playlist.title;
+        let intro=playlist.intro;
+        $(this.aside).prepend(
+          `<li data-id="${id}">
+          <div>
+          <p class="playlistTitle">${title}</p>
+          <p class="playlistIntro">${intro}</p>
+          </div>
+          </li>`
+          );
+      })
+    },
+    renderNewPlaylist(data){
+      let id=data.id;
+      let title = data.title;
+      let intro = data.intro;
+      $(this.aside).prepend(
+        `<li data-id="${id}">
+        <div>
+        <p class="playlistTitle">${title}</p>               
+        <p class="playlistIntro">${intro}</p>
+        </div>
+        </li>`
+      );
     }
   };
   let model = {
@@ -44,11 +73,26 @@
       let placeholders = ['title','cover','intro','songs'];
       placeholders.map((i)=>{
         playlist.set(i,data[i]);
-      })
+      });
       return playlist.save();
     },
-    fetchPlaylist(){
-      
+    fetchAllPlaylists(){
+      let query = new AV.Query('Playlist');
+      query.find().then((res)=>{
+        let playlistItem = [];
+        res.map((i)=>{
+          let item = {};
+          let placeholders = ['title','cover','intro','songs'];
+          item.id = i.id;
+          placeholders.map((ii)=>{
+            item[ii] = i.attributes[ii];
+          })
+          return playlistItem.push(item);
+        })
+        this.data = playlistItem;
+        console.log(this.data);
+        window.eventHub.emit('fetchAllPlaylists',this.data);
+      },(err)=>{console.error(err)})
     },
     reset(){
       this.data = {title:'',cover:'',intro:'',songs:''}
@@ -59,8 +103,16 @@
       this.view = view;
       this.model = model;
       this.bindEvent();
+      window.eventHub.on('save',(data)=>{
+        this.view.renderNewPlaylist(data);
+      })
     },
     bindEvent(){
+      this.model.fetchAllPlaylists();
+      window.eventHub.on('fetchAllPlaylists',(data)=>{
+        this.view.renderPlaylistAside(data);
+        this.model.reset();
+      })
       this.model.fetchSongs();
       window.eventHub.on('fetchSongs',(data)=>{
         this.view.renderSongs(data);
@@ -70,7 +122,12 @@
         e.preventDefault();
         let formEl = e.currentTarget;
         this.getFormData(formEl);
-        this.model.createPlaylist(this.model.data);
+        this.model.createPlaylist(this.model.data)
+          .then(()=>{
+            window.eventHub.emit('save',this.model.data);
+            this.model.reset();
+          })
+          .catch((err)=>{console.log(err)});
       })
     },
     getFormData(form){

@@ -45,6 +45,13 @@ main{
   box-shadow: 5px 4px 10px -1px rgba(198, 177, 240,.75);
 }
 
+.playlistTitle, .playlistIntro{
+  display: -webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 
 .playlist::-webkit-scrollbar { width: 0 !important }
 .playlist > li{
