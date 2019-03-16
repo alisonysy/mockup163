@@ -44,6 +44,18 @@
         </div>
         </li>`
       );
+    },
+    resetForm(){
+      let placeholders = ['title','cover','intro'];
+      let form = $(this.el).find('form')[0];
+      let arr=[];
+      placeholders.map((name)=>{
+        let item = $(form).find(`[name=${name}]`)[0];
+        arr.push(item);
+      })
+      arr.map((input)=>{
+        input.value='';
+      })
     }
   };
   let model = {
@@ -78,7 +90,7 @@
     },
     fetchAllPlaylists(){
       let query = new AV.Query('Playlist');
-      query.find().then((res)=>{
+      return query.find().then((res)=>{
         let playlistItem = [];
         res.map((i)=>{
           let item = {};
@@ -87,7 +99,7 @@
           placeholders.map((ii)=>{
             item[ii] = i.attributes[ii];
           })
-          return playlistItem.push(item);
+         playlistItem.push(item);
         })
         this.data = playlistItem;
         console.log(this.data);
@@ -102,21 +114,26 @@
     init(view, model){
       this.view = view;
       this.model = model;
+      this.model.fetchAllPlaylists()
+        .then(()=>{
+          let li = $(this.view.aside).find('li');
+          console.log(li);
+        });
+      this.model.fetchSongs();
       this.bindEvent();
-      window.eventHub.on('save',(data)=>{
-        this.view.renderNewPlaylist(data);
-      })
-    },
-    bindEvent(){
-      this.model.fetchAllPlaylists();
       window.eventHub.on('fetchAllPlaylists',(data)=>{
         this.view.renderPlaylistAside(data);
         this.model.reset();
-      })
-      this.model.fetchSongs();
+      });
+      window.eventHub.on('save',(data)=>{
+        this.view.renderNewPlaylist(data);
+        this.view.resetForm();
+      });
       window.eventHub.on('fetchSongs',(data)=>{
         this.view.renderSongs(data);
-      })
+      });
+    },
+    bindEvent(){
       let form = $(this.view.el).find('form')[0];
       form.addEventListener('submit',(e)=>{
         e.preventDefault();
@@ -128,6 +145,10 @@
             this.model.reset();
           })
           .catch((err)=>{console.log(err)});
+      });
+      let aside = $(this.view.aside)[0];
+      aside.addEventListener('click',(e)=>{
+        console.log(e.currentTarget)
       })
     },
     getFormData(form){
