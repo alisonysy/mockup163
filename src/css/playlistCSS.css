@@ -1,0 +1,250 @@
+/* reset */
+*{padding: 0;margin: 0;box-sizing: border-box;color: #fff;}
+ul,ol{list-style: none;}
+a{text-decoration: none;}
+h2,h4,h6{font-weight: normal;}
+h2{font-size: 1.3rem;}
+h4{font-size: 1rem;}
+
+html{font-size: 14px;}
+body{
+  width:100vw;
+  background: linear-gradient(to top,#04031d,#1c194c) no-repeat;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.clearfix::after{
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* icon setup */
+.icon {
+  vertical-align: -0.15em;
+  overflow: hidden;
+}
+
+/* import fonts */
+@font-face{
+  font-family: 'Monad-Heading';
+  src:url("../fonts/Monad.otf") format('opentype');
+}
+
+/* Nav bar */
+.back-wrapper{
+  height: 8%;
+  background: linear-gradient(to right,#4925bf5b,#4925bf8f);
+  width: 100%;
+}
+
+.back{
+  float: left;
+  height: 100%;
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.back > .back-link > svg{
+  fill:#fff;
+  width:2.5rem;
+  height: 2.5rem;
+  margin:auto;
+}
+
+.logo{
+  float: right;
+  margin-right: 1rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.logo > svg{
+  fill:#fff;
+  width: 2rem; height: 2rem;
+  margin: auto 0.5rem auto 1rem;
+}
+
+.logo > h1{
+  font-family: 'Monad-Heading';
+}
+
+/* Playlist info section */
+.info{
+  height: 40%;
+  width:100%;
+  background: linear-gradient(to bottom,#04031d8a, #04031d8a),
+    url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552801653066&di=7d65230341f877360391490335e7a857&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0144335686440332f8759f04eae086.jpg%401280w_1l_2o_100sh.jpg')
+    no-repeat center;
+  background-size: cover;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cover and title */
+
+.cover-and-title{
+  width:100%;
+  height:66%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover-wrapper{
+  display: inline-block;
+  width:40%;
+  height: 100%;
+  position: relative;
+}
+
+.cover-wrapper::before{
+  content: '';
+  display: inline-block;
+  height: 100%;
+  width: 15%;
+  vertical-align: middle;
+}
+
+.cover{
+  display: inline-block;
+  width:80%;
+  padding-top: 80%;
+  border:1px solid rgba(255, 255, 255, 0.589);
+  background: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552801653066&di=7d65230341f877360391490335e7a857&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0144335686440332f8759f04eae086.jpg%401280w_1l_2o_100sh.jpg')
+    no-repeat center;
+  background-size: cover;
+  overflow: hidden;
+  box-shadow: 1px 1px 4px 2px rgba(28, 25, 76,0.5);
+  vertical-align: middle;
+}
+
+.title{
+  display: inline-block;
+  width:60%;
+  height: 100%;
+  position: relative;
+}
+
+.title::before{
+  content:'';
+  display: inline-block;
+  height: 100%;
+  width:20%;
+  vertical-align: middle;
+}
+
+.title > h1{
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Introduction */
+.intro{
+  width:100%;
+  height: 34%;
+  position: relative;
+}
+
+.intro-content{
+  width:100%;
+  height: 90%;
+  padding: 5%;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+.extend{
+  display: none;
+}
+
+.extend.active{
+  display: inline;
+  position: absolute;
+  bottom: 10%;
+  right:5%;
+  width:2rem;
+  height: 1rem;
+  font-size: 0.8rem;
+  background: none;
+  border:none;
+}
+
+/* Songs */
+.songs-wrapper{
+  height:52%;
+  width: 100%;
+}
+
+.songs{
+  width: 100%;
+  border:1px solid red;
+}
+
+.songs >li{
+  padding:0.5rem;
+  width:100%;
+  height: 4rem;
+  position: relative;
+}
+
+.songs>li::after{
+  content: "";
+  position: absolute;
+  width:95%;
+  border-bottom:1px solid rgba(198,177,240,0.25);
+  top: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.songs>li > a{
+  width:100%;
+  height: auto;
+  display: flex;
+}
+/*-----------------------------------------------------------------------------------------------*/
+.song-wrapper{
+  width:85%;
+}
+
+.play{
+  width:15%;
+  text-align: center;
+}
+
+.play > svg{
+  width:2.5rem;
+  height: 2.5rem;
+}
+
+.song-wrapper > h4{
+  font-size: 1.2rem;
+  display: -webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.song-wrapper > h6{
+  font-size: 0.8rem;
+  display: -webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.song-wrapper > h6.active::before{
+  content:attr(isHQ); /* data- attribute */
+  font-size: 0.6rem;
+  display: inline-block;
+  color:#c6b1f0;
+  border:1px solid #c6b1f0;
+  border-radius: 2px;
+  padding: 1px 2px;
+  margin-right: 2px;
+}
