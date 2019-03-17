@@ -182,7 +182,6 @@ body{
 
 .songs{
   width: 100%;
-  border:1px solid red;
 }
 
 .songs >li{
@@ -207,8 +206,8 @@ body{
   height: auto;
   display: flex;
 }
-/*-----------------------------------------------------------------------------------------------*/
-.song-wrapper{
+
+.songli-wrapper{
   width:85%;
 }
 
@@ -222,7 +221,7 @@ body{
   height: 2.5rem;
 }
 
-.song-wrapper > h4{
+.songli-wrapper > h4{
   font-size: 1.2rem;
   display: -webkit-box;
   -webkit-line-clamp:1;
@@ -230,7 +229,7 @@ body{
   overflow: hidden;
 }
 
-.song-wrapper > h6{
+.songli-wrapper > h6{
   font-size: 0.8rem;
   display: -webkit-box;
   -webkit-line-clamp:1;
@@ -238,7 +237,7 @@ body{
   overflow: hidden;
 }
 
-.song-wrapper > h6.active::before{
+.songli-wrapper > h6.active::before{
   content:attr(isHQ); /* data- attribute */
   font-size: 0.6rem;
   display: inline-block;
