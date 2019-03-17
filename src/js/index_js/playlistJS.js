@@ -1,6 +1,10 @@
 {
   let view = {
     el:'.songs',
+    intro:'.intro-content',
+    cover:'.cover',
+    coverBg:'.info',
+    title:'.title>h1',
     template:`
     <li>
       <a href="./playSong.html?id=__id__">
@@ -32,8 +36,16 @@
         $(el).prepend(template);
       })
     },
-    renderIntro(intro){
-      
+    renderInfo(data){
+      let title = $(this.title)[0];
+      let intro = $(this.intro)[0];
+      let cover = $(this.cover)[0];
+      let coverBg = $(this.coverBg)[0];
+      intro.textContent = data.intro;
+      title.textContent = data.title;
+      $(coverBg).css('background',`linear-gradient(to bottom,#04031d8a, #04031d8a),
+      url('${data.cover}') no-repeat center`);
+      $(cover).css('background',`url('${data.cover}') no-repeat center`);
     }
   };
   let model ={
@@ -81,6 +93,7 @@
       this.model.fetchPlaylist(this.model.data.id)
         .then(()=>{
           this.model.findSongs(this.model.data.songs);
+          this.view.renderInfo(this.model.data);
         });
     },
     fetchPlaylistId(){

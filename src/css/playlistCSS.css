@@ -76,9 +76,6 @@ body{
 .info{
   height: 40%;
   width:100%;
-  background: linear-gradient(to bottom,#04031d8a, #04031d8a),
-    url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552801653066&di=7d65230341f877360391490335e7a857&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0144335686440332f8759f04eae086.jpg%401280w_1l_2o_100sh.jpg')
-    no-repeat center;
   background-size: cover;
   overflow: hidden;
   display: flex;
@@ -115,8 +112,6 @@ body{
   width:80%;
   padding-top: 80%;
   border:1px solid rgba(255, 255, 255, 0.589);
-  background: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552801653066&di=7d65230341f877360391490335e7a857&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0144335686440332f8759f04eae086.jpg%401280w_1l_2o_100sh.jpg')
-    no-repeat center;
   background-size: cover;
   overflow: hidden;
   box-shadow: 1px 1px 4px 2px rgba(28, 25, 76,0.5);
@@ -140,6 +135,10 @@ body{
 
 .title > h1{
   display: inline-block;
+  padding-right: 1rem;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  width:78%;
   vertical-align: middle;
 }
 
