@@ -43,9 +43,9 @@
       let coverBg = $(this.coverBg)[0];
       intro.textContent = data.intro;
       title.textContent = data.title;
-      $(coverBg).css('background',`linear-gradient(to bottom,#04031d8a, #04031d8a),
-      url('${data.cover}') no-repeat center`);
-      $(cover).css('background',`url('${data.cover}') no-repeat center`);
+      $(coverBg).css({'background':`linear-gradient(to bottom,#04031d8a, #04031d8a),
+      url('${data.cover}') no-repeat center`,'background-size':'cover'});
+      $(cover).css({'background':`url('${data.cover}') no-repeat center`,'background-size':'contain'});
     }
   };
   let model ={

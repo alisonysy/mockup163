@@ -153,10 +153,16 @@ h2.recom::before{
 
 .recom-playList > ul > li > img{
   width:100%;
+  height: 75%;
+  object-fit: cover;
 }
 
-.recom-playList > ul > li > h4{
+.ul1 h4, .ul2 h4{
   padding-left: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* New Song List */
