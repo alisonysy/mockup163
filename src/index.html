@@ -78,7 +78,15 @@
     </section>
 
     <section class="page3" data-p>
-      page3
+      <div class="bar-wrapper">
+        <form method="get" id="search">
+            <input name="search" id="searchBar" type="text">
+        </form>
+      </div>
+      <div class="results-wrapper active">
+        <p class="resultPara">搜索结果</p>
+        <ul class="results"></ul>
+      </div>
     </section>
 
     <!--<script src="../node_modules/leancloud-storage/dist/av-min.js"></script>-->
@@ -93,6 +101,7 @@
     <script src="./js/index_js/page1-1.js"></script>
     <script src="./js/index_js/page1-2.js"></script>
     <script src="./js/index_js/page2.js"></script>
+    <script src="./js/index_js/page3.js"></script>
     </body>
 
 </html>
