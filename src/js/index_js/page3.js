@@ -6,6 +6,7 @@
   let model = {
     data: {},
     db_data: [],
+    encodedSongArr:[],
     turnIntoArr(arrObj) {
       let placeholders = ['title', 'singer', 'album'];
       let allSongArr = [];
@@ -27,10 +28,11 @@
       this.bindEvent();
       window.eventHub.on('search', (searchVal) => {
         console.log(searchVal);
+        this.match(this.model.encodedSongArr,this.encodeUnicode(searchVal));
       });
       window.eventHub.on('find', (data) => {
         Object.assign(this.model.db_data, data);
-        this.encodeDatabase(this.model.db_data);
+        this.model.encodedSongArr =this.encodeDatabase(this.model.db_data); //this returns an arr;
       })
     },
     bindEvent() {
@@ -57,26 +59,49 @@
       $(this.view.search).on('keydown',
         debounce(() => {
           $(this.view.form).submit();
-        }, 750))
+        }, 1000))
     },
     encodeDatabase(arrObj) {
       let songArr = this.model.turnIntoArr(arrObj);
-      console.log(songArr);
+      let arr=[]
       songArr.map((song) => {
+        let encodedArr=[];
+        encodedArr[0]=song[0];
         song.map((i, index) => {
           if(index>0){
-            let a = this.encodeUnicode(i);
-            console.log(a)
+            encodedArr.push(this.encodeUnicode(i)) ;
           }
         })
+        arr.push(encodedArr);
       })
+      return arr;
+    },
+    match(arrArr,input){
+      let idArr = [];
+      //let data match user input;
+      arrArr.map((song)=>{
+        let id = song[0];
+        song.map((i,index)=>{
+          if(index>0 && index<3){
+            i=i.replace(/\?/g,'\\?')
+            let re = new RegExp(i,'g');
+            if(re.test(input)){
+              idArr.push(id);
+              console.log(id);
+            }else{
+              return;
+            }
+          }
+        })
+      });
+      return idArr;
     },
     encodeUnicode(str) {
       let arr = [];
       for (let i = 0; i < str.length; i++) {
         arr[i] = ("00" + str.charCodeAt(i).toString(16)).slice(-4);
       }
-      return '\\u' + arr.join('\\u');
+      return '?' + arr.join('?');
     },
     decodeUnicode(str) {
       str = str.replace(/\\/g, "%");
