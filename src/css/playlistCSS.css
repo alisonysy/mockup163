@@ -156,21 +156,6 @@ body{
   overflow: auto;
 }
 
-.extend{
-  display: none;
-}
-
-.extend.active{
-  display: inline;
-  position: absolute;
-  bottom: 10%;
-  right:5%;
-  width:2rem;
-  height: 1rem;
-  font-size: 0.8rem;
-  background: none;
-  border:none;
-}
 
 /* Songs */
 .songs-wrapper{

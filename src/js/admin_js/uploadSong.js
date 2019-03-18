@@ -33,7 +33,7 @@
         // Ajax请求downToken的Url，私有空间时使用，JS-SDK将向该地址POST文件的key和domain，服务端返回的JSON必须包含url字段，url值为该文件的下载地址
         // unique_names: true,              // 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
         // save_key: true,                  // 默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
-        domain: 'pmx0myvoy.bkt.clouddn.com',     // bucket域名，下载资源时用到，必需
+        domain: 'pok78j2sg.bkt.clouddn.com',     // bucket域名，下载资源时用到，必需
         container: this.view.find('#addDrop'),             // 上传区域DOM ID，默认是browser_button的父元素
         max_file_size: '10mb',             // 最大文件体积限制
         flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入flash，相对路径
