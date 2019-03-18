@@ -62,7 +62,7 @@
     }
   };
   let model={
-    data:{id:'',title:'',singer:'',url:'',album:'',isHQ:'',cover:''},
+    data:{id:'',title:'',singer:'',url:'',album:'',isHQ:'',cover:'',count:null},
     songState:{duration:'',currentTime:'',durationInSec:'',currentTimeInSec:'',state:''},
     fetchSong(){
       let query = new AV.Query('Song');

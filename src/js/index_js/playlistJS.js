@@ -6,8 +6,8 @@
     coverBg:'.info',
     title:'.title>h1',
     template:`
-    <li>
-      <a href="./playSong.html?id=__id__">
+    <li data-id=__did__>
+      <a href="./playSong.html?id=__id__" target="_blank">
         <div class="songli-wrapper">
           <h4>__title__</h4>
           <h6 isHQ="__val__">__singer__ - __album__</h6>
@@ -33,6 +33,7 @@
         }else{
           template = template.replace(' isHQ="__val__"','')
         }
+        template = template.replace('__did__',data.id);
         $(el).prepend(template);
       })
     },
@@ -95,6 +96,11 @@
           this.model.findSongs(this.model.data.songs);
           this.view.renderInfo(this.model.data);
         });
+      $(this.view.el).on('click','li',(e)=>{
+        let song = e.currentTarget;
+        let id=song.dataset.id;
+        window.eventHub.emit('count',id);
+      })
     },
     fetchPlaylistId(){
       let winSearch = window.location.search;

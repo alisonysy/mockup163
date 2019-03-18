@@ -3,8 +3,8 @@
     el:'.popSongList',
     updateTime:'.updateTime',
     template:`
-    <li>
-    <a href="./playSong.html?id=__id__">
+    <li data-id=__did__>
+    <a href="./playSong.html?id=__id__" target="_blank">
       <h1>__order__</h1>
       <div class="song-wrapper">
         <h4>__title__</h4>
@@ -33,6 +33,7 @@
           template = template.replace(' isHQ="__val__"','')
         }
         template = template.replace('__order__',order);
+        template = template.replace('__did__',data.id);
         $(el).prepend(template);
       })
       let updateTimeEl = $(this.updateTime)[0];
@@ -41,11 +42,11 @@
     }
   };
   let model ={
-    data:{id:'',title:'',singer:'',url:'',album:'',isHQ:''},
+    data:{id:'',title:'',singer:'',url:'',album:'',isHQ:'',count:0},
     db_data:[],
-    findPopSong(){
+    findSongs(){
       let query = new AV.Query('Song');
-      let placeholders = ['title','singer','album','isHQ','url']
+      let placeholders = ['title','singer','album','isHQ','url','count']
       return query.find().then((res)=>{
         let songItem = [];
         res.map((i)=>{
@@ -57,7 +58,28 @@
           return songItem.push(item);
         })
         this.db_data = songItem;
-      }).catch((err)=>{console.log(err)})
+      })
+      .catch((err)=>{console.log(err)})
+    },
+    rankPopSong(){
+      function bubbleSort(input) {
+        let sorted = [];
+        while (input.length) {
+          for (let i = 0; i < input.length - 1; i++) {
+            if(!input[i].count){
+              input[i].count=0;
+            }
+            if (input[i].count > input[i + 1].count) {
+              let temp = input[i];
+              input[i] = input[i + 1];
+              input[i + 1] = temp;
+            }
+          };
+          sorted.unshift(input.pop());
+        }
+        return sorted;
+      }
+      this.db_data = bubbleSort(this.db_data);
     }
   };
   let controller = {
@@ -67,10 +89,18 @@
       this.bindEvent();
     },
     bindEvent(){
-      this.model.findPopSong()
+      this.model.findSongs()
+        .then(()=>{
+          this.model.rankPopSong();
+        })
         .then(()=>{
           this.view.renderSong(this.model.db_data);
         });
+      $(this.view.el).on('click','li',(e)=>{
+        let song = e.currentTarget;
+        let id=song.dataset.id;
+        window.eventHub.emit('count',id);
+      })
     }
   };
   controller.init(view,model);

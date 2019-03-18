@@ -5,8 +5,8 @@
     wrapper:'.results-wrapper',
     result:'.results',
     liTemplate:`
-    <li>
-    <a href="./playSong.html?id=__id__">
+    <li data-id=__did__>
+    <a href="./playSong.html?id=__id__" target="_blank">
       <div class="p3-song-wrapper">
         <h4>__title__</h4>
         <h6 isHQ="__val__">__singer__ - __album__</h6>
@@ -32,7 +32,8 @@
           template = template.replace('<h6 isHQ="__val__">',"<h6 isHQ='HQ' class='active'>")
         }else{
           template = template.replace(' isHQ="__val__"','')
-        }
+        };
+        template = template.replace('__did__',song.id);
         $(results).prepend(template);
       })
     }
@@ -102,6 +103,11 @@
         let bar = $(form).find('input')[0];
         window.eventHub.emit('search', bar.value);
       });
+      $(this.view.result).on('click','li',(e)=>{
+        let song = e.currentTarget;
+        let id=song.dataset.id;
+        window.eventHub.emit('count',id);
+      })
     },
     getSearchVal() {
       const debounce = (func, delay) => {

@@ -95,7 +95,7 @@
     }
   };
   let model = {
-    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:'',cover:'',lyrics:''},
+    data:{id:'',title:'',singer:'',album:'',url:'',isHQ:'',cover:'',lyrics:'',count:0},
     create(data){
       let Song = AV.Object.extend('Song');
       let song = new Song();
@@ -106,6 +106,7 @@
       song.set('isHQ',data.isHQ);
       song.set('cover',data.cover);
       song.set('lyrics',data.lyrics);
+      song.set('count',data.count);
       return song.save();
     },
     update(data){
