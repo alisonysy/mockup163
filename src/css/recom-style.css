@@ -332,10 +332,6 @@ section.page3.displayed{
 }
 
 .results-wrapper{
-  display: none;
-}
-
-.results-wrapper.active{
   display: block;
   width:100%;
 }
@@ -354,4 +350,54 @@ section.page3.displayed{
   top: 1.8rem;
   left: 46%;
   transform: translateX(-50%);
+}
+
+/* results - song items */
+.results > li{
+  margin:1.6rem 1rem;
+  padding:0.5rem;
+  width:calc(100%-1rem);
+  height: 4rem;
+  background: linear-gradient(137deg,#c6b1f054 50%,#a4346e77 70%),
+              linear-gradient(217deg,#5a29659a 58%,#1c179e93 70%);
+  border-radius: 1rem;
+  position: relative;
+}
+
+.results > li > a{
+  width:100%;
+  height: auto;
+  display: flex;
+}
+
+.p3-song-wrapper{
+  width:85%;
+  padding-left: 0.8rem;
+}
+
+.play{
+  width:15%;
+  text-align: center;
+}
+
+.p3-play > svg.icon{
+  width:2.5rem;
+  height: 2.5rem;
+  vertical-align: top;
+}
+
+.p3-song-wrapper > h4{
+  font-size: 1.2rem;
+  display: -webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.p3-song-wrapper > h6{
+  font-size: 0.8rem;
+  display: -webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

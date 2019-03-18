@@ -1,12 +1,48 @@
 {
   let view = {
     search: '#searchBar',
-    form: '#search'
+    form: '#search',
+    wrapper:'.results-wrapper',
+    result:'.results',
+    liTemplate:`
+    <li>
+    <a href="./playSong.html?id=__id__">
+      <div class="p3-song-wrapper">
+        <h4>__title__</h4>
+        <h6 isHQ="__val__">__singer__ - __album__</h6>
+      </div>
+      <div class="p3-play">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-play"></use>
+        </svg>
+      </div>
+    </a>
+    </li>
+    `,
+    renderLi(arrObj){
+      let results = $(this.result)[0];
+      results.innerHTML='';
+      let placeholders = ['id','title','singer','album'];
+      arrObj.map((song)=>{
+        let template = this.liTemplate;
+        placeholders.map((ii)=>{
+          template = template.replace(`__${ii}__`,song[ii]||'');
+        });
+        if(song.isHQ==="1"){
+          template = template.replace('<h6 isHQ="__val__">',"<h6 isHQ='HQ' class='active'>")
+        }else{
+          template = template.replace(' isHQ="__val__"','')
+        }
+        $(results).prepend(template);
+      })
+    }
   };
   let model = {
     data: {},
     db_data: [],
     encodedSongArr:[],
+    results:[],
+    songli:[],
     turnIntoArr(arrObj) {
       let placeholders = ['title', 'singer', 'album'];
       let allSongArr = [];
@@ -19,6 +55,22 @@
         allSongArr.push(songArr);
       });
       return allSongArr;
+    },
+    findSong(arr){
+      this.songli=[];
+      arr.map((id)=>{
+        id = id.split('id:')[1];
+        let query = new AV.Query('Song');
+        let temp={};
+        return query.get(id).then((res)=>{
+          temp = res.attributes;
+          temp.id = res.id;
+          this.songli.push(temp);
+        })
+          .then(()=>{
+            window.eventHub.emit('findSong',this.songli);
+          })
+      })
     }
   };
   let controller = {
@@ -28,11 +80,18 @@
       this.bindEvent();
       window.eventHub.on('search', (searchVal) => {
         console.log(searchVal);
-        this.match(this.model.encodedSongArr,this.encodeUnicode(searchVal));
+        this.model.results=this.match(this.model.encodedSongArr,this.encodeUnicode(searchVal));
+        window.eventHub.emit('result',this.model.results);
       });
       window.eventHub.on('find', (data) => {
         Object.assign(this.model.db_data, data);
         this.model.encodedSongArr =this.encodeDatabase(this.model.db_data); //this returns an arr;
+      });
+      window.eventHub.on('result',(data)=>{
+        this.model.findSong(data);
+      });
+      window.eventHub.on('findSong',(data)=>{
+        this.view.renderLi(data);
       })
     },
     bindEvent() {
@@ -85,9 +144,8 @@
           if(index>0 && index<3){
             i=i.replace(/\?/g,'\\?')
             let re = new RegExp(i,'g');
-            if(re.test(input)){
+            if(re.test(input) && idArr.indexOf(id)===-1){
               idArr.push(id);
-              console.log(id);
             }else{
               return;
             }
