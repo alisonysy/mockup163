@@ -51,7 +51,6 @@
           return songItem.push(item);
         })
         this.db_data = songItem;
-        console.log(this.db_data)
         window.eventHub.emit('find',this.db_data);
       },(err)=>{console.error(err)})
     }
