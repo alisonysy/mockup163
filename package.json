@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "express": "^4.16.4",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "leancloud-storage": "^3.11.1",
     "multiparty": "^4.2.1",
     "plupload": "^2.3.2",
